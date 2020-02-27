@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import joblib
 import shap
-
+from analysis import globalSurrogate,shap_compute,residuals_plot
 # model_path 输入模型pkl的路径
 # name_of_model 输入模型的名字
 # data_path 训练数据集csv的路径
