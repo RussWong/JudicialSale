@@ -1,10 +1,5 @@
-编程语言:Python3
+编程环境:Python3.6
+
 系统集群:Linux
-所需工具包:numpy
-         pandas
-         sys
-         joblib
-         shap
-         matplotlib
-         sklearn
-         time
+
+所需工具包:numpy,pandas,sys,joblib,shap,matplotlib,sklearn,time
