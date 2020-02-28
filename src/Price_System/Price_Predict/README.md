@@ -1,11 +1,11 @@
-## 各环节输入输出
+## Price_Predict各环节输入输出
 
 | 环节                                                         | 输入                                                         | 输出                                                         |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| 人工预处理                  Src/ (task1_)imtermediate.py     | Data/raw/                                                 dataset1.csv                                            (dataset2.csv) | Data/intermediate/  task1_intermediate.csv (task2_intermediate.csv) |
-| 数据清洗                       Src/         task1_qualified.py | Data/intermediate/  task1_intermediate.csv                   | Data/qualified/                         task1_qualified.csv  |
+| 人工预处理                  Src/ (task1_)preprocess.py       | Data/raw/                                                 dataset1.csv                                            (dataset2.csv) | Data/preprocess/  task1_preprocess.csv (task2_preprocess.csv) |
+| 数据清洗                       Src/         task1_qualified.py | Data/preprocess/  task1_preprocess.csv                       | Data/qualified/                         task1_qualified.csv  |
 | 数据编码                         Src/       task1_encoding.py | Data/qualified/  task1_qualified.csv                         | Data/encoding/                        task1_encoding.csv     |
 | 特征选择                          Src/           task1_feature.py | Data/encoding/ task1_encoding.csv                            | Data/feature/                                 task1_feature.csv |
 | 模型训练                         Src/          task1_model.py | Data/feature/ task1_feature.csv                              | Output/model/                              task1_model.pkl   |
 | 模型预测                       Src/    task1_prediction.py   | Data/feature/                       task1_feature_test.csv                                               (用于预测的数据集重复上述操作生成该文件,文件名以_test作区分) | Output/results/                                                     结果 |
-| 模型分析                      Src/ task1_explanation.py      | Docs/                                                                         图片、文本、说明文档等                                                           Output/model/                                    task1_model.pkl                                   Output/results/                                                         结果 | Output/analysis/                    task1_analysis.docx      |
+| 模型分析                      Src/  task1_analysis.py        | Docs/                                                                         图片、文本、说明文档等                                                           Output/model/                                    task1_model.pkl                                   Output/results/                                                         结果 | Output/analysis/                    task1_analysis.docx      |
