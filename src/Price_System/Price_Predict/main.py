@@ -14,13 +14,13 @@ from predict_analysis import predict_analysis
 
 # 手工处理
 input_path = '../../../Data/Price_System/Price_Predict/raw/house/used_house_data_test.csv'
-output_path = '../../../Data/Price_System/Price_Predict/intermediate/house/used_house_data_test_intermediate.csv'
+output_path = '../../../Data/Price_System/Price_Predict/preprocess/house/used_house_data_test_intermediate.csv'
 data_preprocess, cols = predict_preprocess(input_path=input_path,
                                output_path=output_path,
                                is_need=1)
 
 # 数据清洗
-input_path =  '../../../Data/Price_System/Price_Predict/intermediate/house/used_house_data_test_intermediate.csv'
+input_path =  '../../../Data/Price_System/Price_Predict/preprocess/house/used_house_data_test_intermediate.csv'
 output_path = '../../../Data/Price_System/Price_Predict/qualified/house/used_house_data_test_qualified.csv'
 docs_path = '../../../docs/Price_System/Price_Predict/'
 data_qualified = predict_qualified(input_path=input_path,
