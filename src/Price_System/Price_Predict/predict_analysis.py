@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 import joblib
 import shap
 from analysis import globalSurrogate,shap_compute,residuals_plot

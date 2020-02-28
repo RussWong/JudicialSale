@@ -14,7 +14,7 @@ def predict_hand(input_path, output_path, is_need=0):
     'Property_Rights_Time'] # 数值型变量名
 
     if is_need == 1:
-        hand = handpreprocessing(data=data, type_of_dataset=self.type_of_dataset, cols_num=cols_num)
+        hand = handpreprocessing(data=data, cols_num=cols_num)
         data, cols = hand.run()
     else:
         cols = {}
