@@ -1,9 +1,9 @@
-output由model,results,analysis三部分构成
+Price System统一存放**成交价格分析系统**所产生的输出
 
-其中:
+成交价格分析系统由以下三个模块组成,不同模块所产生的输出保存在不同模块的目录中:
 
-model统一存放经过数据训练后的模型,以pkl格式保存
++ Price Predict:成交价格预测
 
-results统一存放模型预测所得到的结果,以txt格式保存
++ Price Trend:成交价趋势分析
 
-analysis统一存放结果分析文档,以doc格式保存
++ Similar_Search:相似检索

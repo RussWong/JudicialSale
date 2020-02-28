@@ -1,4 +1,4 @@
-output由model,results,analysis三部分构成
+Price Trend所产生的输出由model,results,analysis三部分构成
 
 其中:
 
