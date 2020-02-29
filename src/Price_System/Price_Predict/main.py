@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 sys.path.append('./module/')
 
-from predict_hand import predict_hand
+from predict_preprocess import predict_preprocess
 from predict_qualified import predict_qualified
 from predict_encoding import predict_encoding
 from predict_feature import predict_feature
@@ -15,7 +15,7 @@ from predict_analysis import predict_analysis
 # 手工处理
 input_path = '../../../Data/Price_System/Price_Predict/raw/house/used_house_data_test.csv'
 output_path = '../../../Data/Price_System/Price_Predict/intermediate/house/used_house_data_test_intermediate.csv'
-data_hand, cols = predict_hand(input_path=input_path,
+data_preprocess, cols = predict_preprocess(input_path=input_path,
                                output_path=output_path,
                                is_need=1)
 
