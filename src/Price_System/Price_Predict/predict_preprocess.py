@@ -6,7 +6,7 @@ from handpreprocessing import handpreprocessing
 # output_path 输出csv的路径
 # is_need 是否需要进行手动特征工程
 
-def predict_hand(input_path, output_path, is_need=0):
+def predict_preprocessing(input_path, output_path, is_need=0):
 
     data = pd.read_csv(input_path)
     cols_num = ['Final_Price','Transaction_Cycle','Num_Price_Adjustment',
