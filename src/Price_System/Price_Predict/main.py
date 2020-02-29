@@ -51,7 +51,7 @@ train, test_result, train_X, test_X, test_y =  predict_model(input_path=input_pa
                                                              model_path = model_path,
                                                              name_of_model='bagging',
                                                              name_of_target='Final_Price')
-train_X.to_csv('../../../output/Price_System/Price_Predict/model/bagging_train_X.csv', index=False)
+train_X.to_csv('../../../output/Price_System/Price_Predict/result/bagging_train_X.csv', index=False)
 
 # 模型预测
 model_path = '../../../output/Price_System/Price_Predict/model/price_predict_bagging.pkl'
@@ -63,7 +63,7 @@ result = predict_prediction(model_path=model_path,
 # 模型分析
 name_of_model = 'bagging'
 model_path = '../../../output/Price_System/Price_Predict/model/price_predict_bagging.pkl'
-data_path = '../../../output/Price_System/Price_Predict/model/bagging_train_X.csv'
+data_path = '../../../output/Price_System/Price_Predict/result/bagging_train_X.csv'
 output_path = '../../../output/Price_System/Price_Predict/analysis/bagging_shap.png'
 predict_analysis(model_path=model_path,
                  name_of_model=name_of_model,
