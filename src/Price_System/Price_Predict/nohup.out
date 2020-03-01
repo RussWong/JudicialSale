@@ -1,0 +1,132 @@
+findfont: Font family ['sans-serif'] not found. Falling back to DejaVu Sans.
+Using a non-tuple sequence for multidimensional indexing is deprecated; use `arr[tuple(seq)]` instead of `arr[seq]`. In the future this will be interpreted as an array index, `arr[np.array(seq)]`, which will result either in an error or a different result.
+findfont: Font family ['sans-serif'] not found. Falling back to DejaVu Sans.
+findfont: Font family ['sans-serif'] not found. Falling back to DejaVu Sans.
+findfont: Font family ['sans-serif'] not found. Falling back to DejaVu Sans.
+
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+findfont: Font family ['sans-serif'] not found. Falling back to DejaVu Sans.
+findfont: Font family ['sans-serif'] not found. Falling back to DejaVu Sans.
+findfont: Font family ['sans-serif'] not found. Falling back to DejaVu Sans.
+findfont: Font family ['sans-serif'] not found. Falling back to DejaVu Sans.
+经纬度转换
+经纬度转换开始
+Coding number is 5000
+Coding number is 10000
+Coding number is 15000
+Coding number is 20000
+Coding number is 25000
+Coding number is 30000
+Coding number is 35000
+Coding number is 40000
+Coding number is 45000
+Coding number is 50000
+Coding number is 55000
+转换后数据规格：(56126, 27)
+耗时：7966.5873
+经纬度转换结束
+数据去重开始
+去重后数据规格：(54555, 27)
+数据去重结束
+去除了缺失率超过40 % 的特征:
+Num_Browse
+Unit_Structure
+Property_Rights_Time
+House_Ownership
+Year_Of_Housing
+数值型数据EM插补开始,总数据量：54555
+数值型数据EM插补完成，耗时27秒
+非数值型数据EM插补开始,总数据量：54555
+分类变量预编码完成，开始数据插值
+分类变量插值与反编码完成，共耗时63秒
+异常检测开始
+Iteration num: 15
+=========异常点作图========
+异常检测数： 3756
+异常检测后数据规格：(54555, 13)
+耗时：48.1241
+异常检测结束
+数据编码开始
+编码后数据规格：(50799, 22)
+耗时：0.2202
+数据编码结束
+Traceback (most recent call last):
+  File "main.py", line 45, in <module>
+    num_of_feature=15, name_of_target='Final_Price')
+  File "/home/zhangjianquan/mygit/pap-2020/src/Price_System/Price_Predict/predict_feature.py", line 28, in predict_feature
+    f_test, _ = f_regression(x, y)
+  File "/home/zhangjianquan/anaconda3/lib/python3.7/site-packages/sklearn/feature_selection/univariate_selection.py", line 279, in f_regression
+    X, y = check_X_y(X, y, ['csr', 'csc', 'coo'], dtype=np.float64)
+  File "/home/zhangjianquan/anaconda3/lib/python3.7/site-packages/sklearn/utils/validation.py", line 756, in check_X_y
+    estimator=estimator)
+  File "/home/zhangjianquan/anaconda3/lib/python3.7/site-packages/sklearn/utils/validation.py", line 573, in check_array
+    allow_nan=force_all_finite == 'allow-nan')
+  File "/home/zhangjianquan/anaconda3/lib/python3.7/site-packages/sklearn/utils/validation.py", line 56, in _assert_all_finite
+    raise ValueError(msg_err.format(type_err, X.dtype))
+ValueError: Input contains NaN, infinity or a value too large for dtype('float64').
