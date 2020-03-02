@@ -6,17 +6,16 @@ from handpreprocessing import handpreprocessing
 # output_path 输出csv的路径
 # is_need 是否需要进行手动特征工程
 
-def predict_preprocess(input_path, output_path, is_need=0):
+def predict_preprocess(input_path, output_path, is_need=1):
 
     data = pd.read_csv(input_path)
-    cols_num = ['Final_Price','Transaction_Cycle','Num_Price_Adjustment',
-    'Num_Look', 'Attention', 'Num_Browse', 'Construction_Area','Age','Storey', 'Ladder', 'Household','Year_Of_Housing',
-    'Property_Rights_Time'] # 数值型变量名
 
     if is_need == 1:
-        hand = handpreprocessing(data=data, cols_num=cols_num)
-        data, cols = hand.run()
+        data, cols = handpreprocessing(data=data)
     else:
+        data_types = data.dtypes
+        cols_num = [data_types.index[i] for i in range(len(data_types)) if data_types[i] in ['int', 'float']]
+
         cols = {}
         cols['num'] = cols_num
         cols['str'] = list(set(list(data.columns)).difference(set(cols['num'])))
