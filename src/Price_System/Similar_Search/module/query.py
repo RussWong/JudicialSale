@@ -1,4 +1,4 @@
-def Query_House(input_data):
+def query_house(input_data):
 	query={
 			"query":{
 				"function_score":{
