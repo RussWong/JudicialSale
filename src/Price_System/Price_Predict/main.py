@@ -2,6 +2,7 @@ import sys
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from pylab import mpl
 sys.path.append('./module/')
 
 from predict_preprocess import predict_preprocess
@@ -16,10 +17,11 @@ from predict_analysis import predict_analysis
 input_path = '../../../Data/Price_System/Price_Predict/raw/house/used_house_data.csv'
 output_path = '../../../Data/Price_System/Price_Predict/preprocess/house/used_house_data_preprocess.csv'
 data_preprocess, cols = predict_preprocess(input_path=input_path,
-                               output_path=output_path,
-                               is_need=1)
+                                           output_path=output_path,
+                                           is_need=1)
 
 # 数据清洗
+mpl.rcParams['font.sans-serif'] = ['SimHei']
 input_path =  '../../../Data/Price_System/Price_Predict/preprocess/house/used_house_data_preprocess.csv'
 output_path = '../../../Data/Price_System/Price_Predict/qualified/house/used_house_data_qualified.csv'
 docs_path = '../../../docs/Price_System/Price_Predict/used_house_data/'

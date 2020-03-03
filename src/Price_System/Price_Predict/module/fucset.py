@@ -64,7 +64,7 @@ def data_latlng(data,ways,cols,path=''):
     # 数据变更
     data.drop('Location',axis=1,inplace=True)
     cols['str'].remove('Location')
-    cols['num'].append('Latitude')
+    cols['num'].append('Longitude')
     cols['num'].append('Latitude')
     # 保存
     # data.to_csv(path+'data_latlng.csv',index=False)
