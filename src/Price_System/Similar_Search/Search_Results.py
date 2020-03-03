@@ -13,6 +13,7 @@ def search_house(input_data,output_path,database):
 	"""
 	params:
 		input_data:Json,用户输入的数据
+		output_path:String,输出数据的存储路径
 		database:String,数据库名称
 	return:
 		house_result:List,根据输入的数据查询到的结果

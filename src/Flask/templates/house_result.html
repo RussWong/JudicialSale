@@ -1,0 +1,89 @@
+<html>
+<head>
+    <title>测试结果</title>
+<!--     <style>
+        .head {
+            color: darkblue ;
+            font-weight: bold;
+
+        }
+        
+    </style>    -->
+<style type="text/css">
+        table
+        {
+            border-collapse: collapse;
+            margin: 0 auto;
+            text-align: center;
+        }
+        table td, table th
+        {
+            border: 1px solid #cad9ea;
+            color: #666;
+            height: 30px;
+        }
+        table thead th
+        {
+            background-color: #CCE8EB;
+            width: 100px;
+        }
+        table tr:nth-child(odd)
+        {
+            background: #fff;
+        }
+        table tr:nth-child(even)
+        {
+            background: #F5FAFA;
+        }
+    </style>
+
+
+
+</head>
+<body>
+    <h2  align='center' style="color: darkblue">结果</h2>
+    <div align='center'>
+        
+        <p class='head' style= 'margin-bottom: 5px;'>相似房产检索结果：</p>
+        <table>
+            <tr>
+                <!-- <th>序号</th> -->
+                <th>市辖区</th>
+                <th>路段</th>
+                <th>小区</th>
+                <th>户型</th>
+                <th>建筑面积</th>
+                <th>建成年代</th>
+                <th>楼层</th>
+                <th>装修情况</th>
+                <th>建筑结构</th>
+                <th>有无电梯</th>
+                <th>房屋权属</th>
+                <th>朝向</th>
+                <th>房屋单价(元)</th>
+                <th>相似程度</th>
+            </tr>
+        {% for result in ans1 %}
+        
+            <tr>
+                <td>{{result['Region']}}</td>  
+                <td>{{result['Road']}}</td>
+                <td>{{result['Community']}}</td>
+                <td>{{result['Room']+result['Hall']}}</td>
+                <td>{{result['Area']}}</td>
+                <td>{{result['Age']}}</td>
+                <td>{{result['Floor']+'('+result['Height']+')'}}</td>
+                <td>{{result['Renovation']}}</td>
+                <td>{{result['Struction']}}</td>
+                <td>{{result['Elevator']}}</td>
+                <td>{{result['Authority']}}</td>
+                <td>{{result['Oriented']}}</td>
+                <td>{{result['Unit_Price']}}</td>
+                <td>{{result['score']}}</td>
+            </tr>
+        
+        {% endfor %}
+        </table>
+    </div>
+</body>
+</html>
