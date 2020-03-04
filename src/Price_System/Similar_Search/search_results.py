@@ -9,10 +9,11 @@ from elasticsearch import Elasticsearch
 
 from module.query import query_house
 
-def search_house(input_data,output_path,database):
+def search_house(input_data,size,output_path,database):
 	"""
 	params:
 		input_data:Json,用户输入的数据
+		size:Int,返回输出数据的数量
 		output_path:String,输出数据的存储路径
 		database:String,数据库名称
 	return:
@@ -21,7 +22,7 @@ def search_house(input_data,output_path,database):
 	es = Elasticsearch(['10.119.0.94'])
 
 	#搜索规则
-	query = query_house(input_data)
+	query = query_house(input_data,size)
 
 	#返回搜索结果
 	result = es.search(index=database,body=query)

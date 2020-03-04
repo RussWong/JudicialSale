@@ -1,4 +1,4 @@
-def query_house(input_data):
+def query_house(input_data,size):
 	query={
 			"query":{
 				"function_score":{
@@ -13,7 +13,7 @@ def query_house(input_data):
 					"score_mode":"multiply"
 					}
 				},
-			'from':0, 'size':50
+			'from':0, 'size':size
 		}
 
 	doc_area={
