@@ -2,6 +2,8 @@
 
 [参考链接](https://fastapi.tiangolo.com/advanced/templates/)
 
+
+
 ## 运行步骤
 
 ###Installation Package
@@ -15,7 +17,7 @@
 ### Run Command
 
 ```
-Uvicorn test:app --reload
+uvicorn test:app --reload
 ```
 
 然后浏览器打开127.0.0.1:8000/items/1
