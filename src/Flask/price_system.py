@@ -46,7 +46,8 @@ def house():
 
     output_path = '../../output/Price_System/Similar_Search/results/'
     database = 'house'
-    house_result = search_house(input_data=input_data,output_path=output_path,database=database)
+    size=50
+    house_result = search_house(input_data=input_data,size=size,output_path=output_path,database=database)
     return render_template('house_result.html', ans1 = house_result)
 
 
