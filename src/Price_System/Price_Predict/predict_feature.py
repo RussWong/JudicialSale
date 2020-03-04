@@ -13,7 +13,8 @@ from sklearn.ensemble import RandomForestRegressor
 # output_path 输出csv的路径
 # num_of_feature 特征数量
 # name_of_target 预测目标名称
-def predict_feature(input_path, output_path, num_of_feature=15, name_of_target='Final_Price'):
+# feature_path 输出选择的特征路径
+def predict_feature(input_path, output_path, feature_path, num_of_feature=15, name_of_target='Final_Price'):
 
     warnings.filterwarnings("ignore")
     data = pd.read_csv(input_path)
@@ -78,6 +79,10 @@ def predict_feature(input_path, output_path, num_of_feature=15, name_of_target='
     for i in l[num_of_feature:]:
         data.drop(i[0], axis=1, inplace=True)
 
+    fw = open(feature_path, 'w', encoding='UTF-8')
+    for i in l[0:num_of_feature]:
+        fw.write(i[0] + '\n')
+    fw.close()
     data.to_csv(output_path, index=False, encoding='utf-8')
 
     return data

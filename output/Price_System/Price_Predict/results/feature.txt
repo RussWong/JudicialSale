@@ -1,0 +1,15 @@
+Construction_Area
+Transaction_Cycle
+Renovation
+Storey
+Longitude
+Latitude
+Age
+Num_Look
+Household
+Type_Structure
+Ladder_Ratio
+House_Type
+Ladder
+Attention
+Trading_Authority
