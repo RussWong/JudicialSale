@@ -8,7 +8,7 @@ plt.rcParams['axes.unicode_minus']=False
 
 def missing_analysis(data_raw,threshould=0.5,ref_dict=None,
                      isNeed_plot=False,fig_size=(30,25),
-                     path='./',filename_col='missing_rate_feature',filename_ind='missing_rate_feature'):
+                     path_col='./',filename_col='missing_rate_feature',path_row='./',filename_ind='missing_rate_feature'):
     '''
     function: main function of the missing analysis
     :input:
@@ -20,7 +20,7 @@ def missing_analysis(data_raw,threshould=0.5,ref_dict=None,
     '''
     data=copy.deepcopy(data_raw)
     print('**************************** missing analysis started ****************************')
-    missing_cols=missing_null_col(data,threshould,isNeed_plot,fig_size,path,filename_col)
+    missing_cols=missing_null_col(data,threshould,isNeed_plot,fig_size,path_col,filename_col)
     if missing_cols.shape[0]>0:
         print('The feature(s):')
         for colname in missing_cols:
@@ -28,7 +28,7 @@ def missing_analysis(data_raw,threshould=0.5,ref_dict=None,
         print('are highly missing,we recommand to delete the feature(s)')
     else:
         print('The missing rate of all the features is OK')
-    missing_inds=missing_null_row(data,threshould,filename_ind)
+    missing_inds=missing_null_row(data,threshould,path_ind,filename_ind)
     if missing_inds.shape[0]>0:
         print('The sample(s) with the index:')
         for ind in missing_inds:
