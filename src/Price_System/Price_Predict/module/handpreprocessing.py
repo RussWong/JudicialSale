@@ -6,9 +6,9 @@ def handpreprocessing(data):
 
     data_pre = data.copy()
 
-    data_pre['Location'] = data.copy()['Region'] + \
-                            data.copy()['Road'] + \
-                            data.copy()['Community_Name']
+    data_pre['Location'] = data_pre['Region'] + \
+                            data_pre['Road'] + \
+                            data_pre['Community_Name']
 
     # 手动删除无意义特征
     cols = ['ID','Unit_Price','Listing_Price','Transaction_Time','Listing_Time','Region','Road','Community_Name','Num_Bedroom', 'Num_Hall']
