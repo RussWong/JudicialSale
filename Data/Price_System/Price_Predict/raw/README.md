@@ -21,7 +21,7 @@
 | Unit_Structure       | object   | 户型结构     |                        |
 | Type_Structure       | object   | 建筑类型     |                        |
 | Oriented             | object   | 朝向         |                        |
-| Age                  | Float64  | 建成年份     |                        |
+| Age                  | Int64    | 建成年份     |                        |
 | Renovation           | object   | 装修情况     |                        |
 | Construction_struct  | object   | 建筑结构     |                        |
 | Ladder_Ratio         | object   | 梯户比例     |                        |
