@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+import uvicorn
 
 import sys
 sys.path.append('../Price_System/Similar_Search/')
@@ -35,4 +36,7 @@ async def house_search(house: House):
     size=10
     house_result = search_house(input_data=input_data,size=size,output_path=output_path,database=database)
     return house_result
+
+if __name__ == '__main__':
+    uvicorn.run(app, port=9050, host='0.0.0.0')
 
