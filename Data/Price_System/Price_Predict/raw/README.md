@@ -1,42 +1,42 @@
 ## 1 数据字典
 
-| 特征                 | 数据类型 | 中文释义     | 备注                   |
-| -------------------- | -------- | ------------ | ---------------------- |
-| ID                   | Int64    | 房屋ID       |                        |
-| Region               | object   | 所在城区     |                        |
-| Road                 | object   | 所在路段     |                        |
-| Community_Name       | object   | 小区名字     |                        |
-| House_Type           | object   | 户型         |                        |
-| Transaction_Time     | object   | 交易时间     |                        |
-| Final_Price          | Float64  | 成交价/万元  |                        |
-| Unit_Price           | Float64  | 单价/元      |                        |
-| Listing_Price        | Float64  | 挂牌价/万元  |                        |
-| Transaction_Cycle    | Float64  | 交易周期/期  |                        |
-| Num_Price_Adjustment | Int64    | 调价次数/次  |                        |
-| Num_Look             | Int64    | 带看次数/次  |                        |
-| Attention            | Int64    | 关注人数/人  |                        |
-| Num_Browse           | Float64  | 浏览人数/人  |                        |
-| Floor                | object   | 楼层高低     |                        |
-| Construction_Area    | Float64  | 建筑面积/m^2 |                        |
-| Unit_Structure       | object   | 户型结构     |                        |
-| Type_Structure       | object   | 建筑类型     |                        |
-| Oriented             | object   | 朝向         |                        |
-| Age                  | Int64    | 建成年份     |                        |
-| Renovation           | object   | 装修情况     |                        |
-| Construction_struct  | object   | 建筑结构     |                        |
-| Ladder_Ratio         | object   | 梯户比例     |                        |
-| Property_Rights_Time | Float64  | 房权年限/年  |                        |
-| Elevator             | object   | 有无电梯     |                        |
-| Trading_Authority    | object   | 交易权属     |                        |
-| Listing_Time         | object   | 挂牌时间     |                        |
-| Housing_Purposes     | object   | 房屋用途     |                        |
-| House_Ownership      | object   | 房权所属     |                        |
-| Year_Of_Housing      | Float64  | 房屋年限/年  |                        |
-| Storey               | Float64  | 所在楼层     |                        |
-| Ladder               | Float64  | 几梯/个      | 由Ladder_Ratio分解所得 |
-| Household            | Float64  | 几户/家      | 由Ladder_Ratio分解所得 |
-| Num_Bedroom          | Float64  | 几室/间      | 由House_Type分解所得   |
-| Num_Hall             | Float64  | 几厅/间      | 由House_Type分解所得   |
+| 特征                 | 数据类型 | 中文释义     | 备注                      |
+| -------------------- | -------- | ------------ | ------------------------- |
+| ID                   | Int64    | 房屋ID       |                           |
+| Region               | object   | 所在城区     | 如 浦东,闵行,静安...      |
+| Road                 | object   | 所在路段     | 如 春申,颛桥,七宝...      |
+| Community_Name       | object   | 小区名字     |                           |
+| House_Type           | object   | 户型         | 如 2室1厅,1室0厅...       |
+| Transaction_Time     | object   | 交易时间     | 如 2018-09-30 ...         |
+| Final_Price          | Float64  | 成交价/万元  |                           |
+| Unit_Price           | Float64  | 单价/元      |                           |
+| Listing_Price        | Float64  | 挂牌价/万元  |                           |
+| Transaction_Cycle    | Float64  | 交易周期/期  |                           |
+| Num_Price_Adjustment | Int64    | 调价次数/次  |                           |
+| Num_Look             | Int64    | 带看次数/次  |                           |
+| Attention            | Int64    | 关注人数/人  |                           |
+| Num_Browse           | Float64  | 浏览人数/人  |                           |
+| Floor                | object   | 楼层高低     | 高/中/低                  |
+| Construction_Area    | Float64  | 建筑面积/m^2 |                           |
+| Unit_Structure       | object   | 户型结构     | 如 平层,跃层 ...          |
+| Type_Structure       | object   | 建筑类型     | 如 塔楼,板楼 ...          |
+| Oriented             | object   | 朝向         | 如 南,北 ...              |
+| Age                  | Float64  | 建成年份     | 如 2013,2014...           |
+| Renovation           | object   | 装修情况     | 如 简装,精装 ...          |
+| Construction_struct  | object   | 建筑结构     | 钢混结构/砖混结构         |
+| Ladder_Ratio         | object   | 梯户比例     | 如 一梯六户,两梯两户 ...  |
+| Property_Rights_Time | Float64  | 房权年限/年  |                           |
+| Elevator             | object   | 有无电梯     | 有/无                     |
+| Trading_Authority    | object   | 交易权属     | 如 动产安置房/商品房  ... |
+| Listing_Time         | object   | 挂牌时间     | 如 2018-07-01 ...         |
+| Housing_Purposes     | object   | 房屋用途     |                           |
+| House_Ownership      | object   | 房权所属     | 共有/非共有               |
+| Year_Of_Housing      | Float64  | 房屋年限/年  |                           |
+| Storey               | Float64  | 所在楼层     |                           |
+| Ladder               | Float64  | 几梯/个      | 由Ladder_Ratio分解所得    |
+| Household            | Float64  | 几户/家      | 由Ladder_Ratio分解所得    |
+| Num_Bedroom          | Float64  | 几室/间      | 由House_Type分解所得      |
+| Num_Hall             | Float64  | 几厅/间      | 由House_Type分解所得      |
 
 ## 2  数据字典规范
 
