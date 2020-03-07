@@ -16,7 +16,7 @@
 | Num_Look             | Int64    | 带看次数/次  |                        |
 | Attention            | Int64    | 关注人数/人  |                        |
 | Num_Browse           | Float64  | 浏览人数/人  |                        |
-| Floor                | object   | 所在楼层     |                        |
+| Floor                | object   | 楼层高低     |                        |
 | Construction_Area    | Float64  | 建筑面积/m^2 |                        |
 | Unit_Structure       | object   | 户型结构     |                        |
 | Type_Structure       | object   | 建筑类型     |                        |
