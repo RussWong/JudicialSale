@@ -10,10 +10,23 @@ from bs4 import BeautifulSoup
 
 # raw_data 输入预测的dataframe
 # encoder_path 输入的编码文件csv路径
-# path_standModel 输入标准化模型stand.pkl
+# path_standModel 输入标准化模型stand.pkl路径
 # path_stand_feature 输入txt
-# path_select_feature 输入选择的feature.json
-def price_predict(raw_data, encoder_path, path_standModel, path_stand_feature, path_select_feature):
+# model_path 预测模型的path
+def price_predict(raw_data, encoder_path, path_standModel, model_path):
+    cols = ['House_Type', 'Transaction_Cycle', 'Num_Look',
+       'Attention', 'Construction_Area', 'Age', 'Renovation',
+       'Construction_struct', 'Ladder_Ratio', 'Elevator', 'Storey', 'Ladder',
+       'Household', 'Region', 'Road', 'Community_Name']
+    select_feature = ['House_Type', 'Transaction_Cycle', 'Num_Look',
+       'Attention', 'Construction_Area', 'Age', 'Renovation',
+       'Construction_struct', 'Ladder_Ratio', 'Elevator', 'Storey', 'Ladder',
+       'Household', 'Longitude', 'Latitude']
+    cols_str = ['Renovation', 'Ladder_Ratio', 'Construction_struct', 'House_Type', 'Elevator']
+    column_stand = ['House_Type', 'Final_Price', 'Transaction_Cycle', 'Num_Price_Adjustment', 'Num_Look', 'Attention', 'Floor', 'Construction_Area', 'Type_Structure', 'Oriented', 'Age', 'Renovation', 'Construction_struct', 'Ladder_Ratio', 'Elevator', 'Trading_Authority', 'Housing_Purposes', 'Storey', 'Ladder', 'Household', 'Longitude', 'Latitude']
+    
+    
+    
     data = raw_data.copy()
     # 缺失处理---------------------------------！！！---------------
 #     data_err = []
@@ -21,19 +34,18 @@ def price_predict(raw_data, encoder_path, path_standModel, path_stand_feature, p
 #         if data.isnull().sum(1)[i] != 0:
 #             data_err.append(i)
 
-    fr = open(path_select_feature, 'r', encoding='UTF-8')
-    cols = json.load(fr)
-    fr.close()
+#     fr = open(path_select_feature, 'r', encoding='UTF-8')
+#     cols = json.load(fr)
+#     fr.close()
 
     # 经纬度编码
     data['Location'] = data['Region'] + data['Road'] + data.copy()['Community_Name']
-    cols_lat = ['Region', 'Road', 'Community_Name']
-    data.drop(cols_lat, axis=1, inplace=True)
+    data.drop(['Region', 'Road', 'Community_Name'], axis=1, inplace=True)
     data_lat = data_latlng(data)
 
     # 数据编码
     encoder = pd.read_csv(encoder_path, index_col=0)
-    data_encoding = data_encoding_predict(data_lat, cols['str'], encoder)
+    data_encoding = data_encoding_predict(data_lat, cols_str, encoder)
 
     # 编码失败---------------------------!!!--------------------------------
 #     encode_err = []
@@ -44,19 +56,19 @@ def price_predict(raw_data, encoder_path, path_standModel, path_stand_feature, p
     # 数据标准化
     data_norm = predict_standardization(data=data_encoding,
                                          mode='predict',
-                                         target='',
+                                         target='Final_Price',
                                          path_model=path_standModel,
-                                         path_stand_feature=path_stand_feature,
-                                         path_select_feature=path_select_feature)
+                                         column_stand=column_stand,
+                                         select_feature=select_feature)
 
 
 
     # 预测
-    # predictor = joblib.load(model_path)
-    # result = predictor.predict(data_norm, axis=1))
+    predictor = joblib.load(model_path)
+    result = predictor.predict(data_norm)
 
 
-    return data_norm
+    return result
 
 
 def data_latlng(data):
@@ -88,16 +100,15 @@ def Latlng(location, i):
     return {'lat':lat, 'lng':lng}
 
 
-def data_encoding_predict(raw_data, cols, encoder):
+def data_encoding_predict(raw_data, cols_str, encoder):
     data = raw_data.copy()
-    if cols is not None and 'str' in cols:
-        for i in cols['str']:
-            data[i] = data[i].map(encoder['Value'])
+    for i in cols_str:
+        data[i] = data[i].map(encoder['Value'])
 
     return data
 
 
-def predict_standardization(data, mode, target, path_model, path_stand_feature, path_select_feature=None):
+def predict_standardization(data, mode, target, path_model, column_stand, select_feature=None):
     if mode == 'train':
         data_trans = data_standardization(data, target, path_model, 'train')
 
@@ -107,22 +118,7 @@ def predict_standardization(data, mode, target, path_model, path_stand_feature, 
         fw.close()
 
     elif mode == 'predict':
-        column_stand = []
-        fr = open(path_stand_feature, 'r', encoding='UTF-8')
-        for line in fr:
-            line = line.strip()
-            column_stand.append(line)
-        fr.close()
-
-        column_predict = []
-        fr = open(path_select_feature, 'r', encoding='UTF-8')
-        dic = json.load(fr)
-        fr.close()
-        for key in dic.keys():
-            for fe in dic[key]:
-                column_predict.append(fe)
-
-        column_add = list(set(list(column_stand)).difference(set(column_predict)))
+        column_add = list(set(list(column_stand)).difference(set(select_feature)))
 
         data_stand = pd.concat([data, pd.DataFrame(columns=column_add)], axis=1)
         data_trans = data_standardization(data_stand[column_stand], target, path_model, 'predict')
@@ -148,11 +144,9 @@ def data_standardization(raw_data, target, path, mode='train', method='Robust'):
     print('==== 数据标准化开始 ====')
     data = raw_data.copy()
     columns = list(data.columns)
-
     if target in columns:
         columns.remove(target)
-#     else:
-#         print('错误：没有此目标标签')
+        print('remove target')
 
     if mode == 'train':
         if method == 'Robust':

@@ -4,10 +4,8 @@ Transaction_Cycle
 Num_Price_Adjustment
 Num_Look
 Attention
-Num_Browse
 Floor
 Construction_Area
-Unit_Structure
 Type_Structure
 Oriented
 Age
@@ -17,7 +15,6 @@ Ladder_Ratio
 Elevator
 Trading_Authority
 Housing_Purposes
-House_Ownership
 Storey
 Ladder
 Household

@@ -54,7 +54,7 @@ print('encoding finish')
 # 特征选择
 input_path='../../../Data/Price_System/Price_Predict/encoding/house/used_house_data_encoding.csv'
 output_path='../../../Data/Price_System/Price_Predict/feature/house/used_house_data_feature.csv'
-feature_path='../../../output/Price_System/Price_Predict/results/feature.json'
+feature_path='../../../output/Price_System/Price_Predict/results/feature.txt'
 data_feature = predict_feature(input_path=input_path,
                                feature_path=feature_path,
                                output_path=output_path,

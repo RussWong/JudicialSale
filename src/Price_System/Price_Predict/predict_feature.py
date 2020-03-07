@@ -86,13 +86,13 @@ def predict_feature(input_path, output_path, feature_path, cols, num_of_feature=
             if feature not in l[0:num_of_feature]:
                 cols[key].remove(feature)
 
+#     fw = open(feature_path, 'w', encoding='UTF-8')
+#     json.dump(cols, fw)
+#     fw.close()
     fw = open(feature_path, 'w', encoding='UTF-8')
-    json.dump(cols, fw)
+    for i in l[0:num_of_feature]:
+        fw.write(i[0] + '\n')
     fw.close()
-    # fw = open(feature_path, 'w', encoding='UTF-8')
-    # for i in l[0:num_of_feature]:
-    #     fw.write(i[0] + '\n')
-    # fw.close()
     data.to_csv(output_path, index=False, encoding='utf-8')
 
     return data
