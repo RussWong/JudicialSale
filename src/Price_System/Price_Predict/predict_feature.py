@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 
 import warnings
+import json
 from sklearn.feature_selection import f_regression, mutual_info_regression
 from sklearn.svm import SVC
 from sklearn.model_selection import StratifiedKFold
@@ -14,7 +15,8 @@ from sklearn.ensemble import RandomForestRegressor
 # num_of_feature 特征数量
 # name_of_target 预测目标名称
 # feature_path 输出选择的特征路径
-def predict_feature(input_path, output_path, feature_path, num_of_feature=15, name_of_target='Final_Price'):
+# cols 输入列信息
+def predict_feature(input_path, output_path, feature_path, cols, num_of_feature=15, name_of_target='Final_Price'):
 
     warnings.filterwarnings("ignore")
     data = pd.read_csv(input_path)
@@ -79,10 +81,18 @@ def predict_feature(input_path, output_path, feature_path, num_of_feature=15, na
     for i in l[num_of_feature:]:
         data.drop(i[0], axis=1, inplace=True)
 
+    for key in cols.keys():
+        for feature in cols[key]:
+            if feature not in l[0:num_of_feature]:
+                cols[key].remove(feature)
+
     fw = open(feature_path, 'w', encoding='UTF-8')
-    for i in l[0:num_of_feature]:
-        fw.write(i[0] + '\n')
+    json.dump(cols, fw)
     fw.close()
+    # fw = open(feature_path, 'w', encoding='UTF-8')
+    # for i in l[0:num_of_feature]:
+    #     fw.write(i[0] + '\n')
+    # fw.close()
     data.to_csv(output_path, index=False, encoding='utf-8')
 
     return data

@@ -1,109 +1,75 @@
-Using a non-tuple sequence for multidimensional indexing is deprecated; use `arr[tuple(seq)]` instead of `arr[seq]`. In the future this will be interpreted as an array index, `arr[np.array(seq)]`, which will result either in an error or a different result.
-
-A value is trying to be set on a copy of a slice from a DataFrame
-
-See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
-
-A value is trying to be set on a copy of a slice from a DataFrame
-
-See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
-
-A value is trying to be set on a copy of a slice from a DataFrame
-
-See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
-
-A value is trying to be set on a copy of a slice from a DataFrame
-
-See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
-
-A value is trying to be set on a copy of a slice from a DataFrame
-
-See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
-
-A value is trying to be set on a copy of a slice from a DataFrame
-
-See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
-
-A value is trying to be set on a copy of a slice from a DataFrame
-
-See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
-
-A value is trying to be set on a copy of a slice from a DataFrame
-
-See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
-
-A value is trying to be set on a copy of a slice from a DataFrame
-
-See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
-
-A value is trying to be set on a copy of a slice from a DataFrame
-
-See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
-
-A value is trying to be set on a copy of a slice from a DataFrame
-
-See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
-
-A value is trying to be set on a copy of a slice from a DataFrame
-
-See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
-
-A value is trying to be set on a copy of a slice from a DataFrame
-
-See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
-
-A value is trying to be set on a copy of a slice from a DataFrame
-
-See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
-
-A value is trying to be set on a copy of a slice from a DataFrame
-
-See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
-
-A value is trying to be set on a copy of a slice from a DataFrame
-
-See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+Traceback (most recent call last):
+  File "main_trainModel.py", line 10, in <module>
+    from predict_encoding import predict_encoding
+  File "/home/zhangjianquan/mygit/pap-2020/src/Price_System/Price_Predict/predict_encoding.py", line 23
+    data = predict_standardization(data=data, mode='train', target=name_of_target, path_model=stand_path, path_stand_feature=path_stand_feature):
+                                                                                                                                                ^
+SyntaxError: invalid syntax
 ==== 经纬度转换 ====
-经纬度转换开始
-Coding number is 5000
-Coding number is 10000
-Coding number is 15000
-Coding number is 20000
-Coding number is 25000
-Coding number is 30000
-Coding number is 35000
-Coding number is 40000
-Coding number is 45000
-Coding number is 50000
-Coding number is 55000
-转换后数据规格：(56126, 27)
-耗时：8838.4921
-经纬度转换结束
-数据去重开始
-去重后数据规格：(54555, 27)
-数据去重结束
+==== 经纬度转换开始 ====
+转换后数据规格：(100, 27)
+耗时：14.4380
+==== 经纬度转换结束 ====
+preprocess finish
+==== 数据去重开始 ====
+去重后数据规格：(100, 27)
+==== 数据去重结束 ====
 去除了缺失率超过40 % 的特征:
-Num_Browse
-Unit_Structure
 Property_Rights_Time
-House_Ownership
 Year_Of_Housing
-数值型数据EM插补开始,总数据量：54555
-数值型数据EM插补完成，耗时27秒
-非数值型数据EM插补开始,总数据量：54555
+数值型数据EM插补开始,总数据量：100
+数值型数据EM插补完成，耗时0秒
+非数值型数据EM插补开始,总数据量：100
 分类变量预编码完成，开始数据插值
-分类变量插值与反编码完成，共耗时64秒
+分类变量插值与反编码完成，共耗时0秒
 异常检测开始
-Iteration num: 30
+Iteration num: 3
 =========异常点作图========
-异常检测数： 3501
-异常检测后数据规格：(54555, 13)
-耗时：75.6385
+异常检测数： 8
+异常检测后数据规格：(100, 14)
+耗时：1.6470
 异常检测结束
-数据编码开始
-编码后数据规格：(51054, 22)
-耗时：0.2021
-数据编码结束
+qualified finish
+Traceback (most recent call last):
+  File "main_trainModel.py", line 50, in <module>
+    name_of_target='Final_Price')
+  File "/home/zhangjianquan/mygit/pap-2020/src/Price_System/Price_Predict/predict_encoding.py", line 14, in predict_encoding
+    data, encoder = data_encoding_train(data, cols, name_of_target)
+NameError: name 'cols' is not defined
+==== 经纬度转换 ====
+==== 经纬度转换开始 ====
+转换后数据规格：(100, 27)
+耗时：14.6513
+==== 经纬度转换结束 ====
+preprocess finish
+==== 数据去重开始 ====
+去重后数据规格：(100, 27)
+==== 数据去重结束 ====
+去除了缺失率超过40 % 的特征:
+Property_Rights_Time
+Year_Of_Housing
+数值型数据EM插补开始,总数据量：100
+数值型数据EM插补完成，耗时0秒
+非数值型数据EM插补开始,总数据量：100
+分类变量预编码完成，开始数据插值
+分类变量插值与反编码完成，共耗时0秒
+异常检测开始
+Iteration num: 1
+=========异常点作图========
+异常检测数： 13
+异常检测后数据规格：(100, 14)
+耗时：1.4533
+异常检测结束
+qualified finish
+==== 数据编码开始 ====
+编码后数据规格：(87, 25)
+编码表数据规格：(40, 1)
+耗时：0.0564
+==== 数据编码结束 ====
+==== 数据标准化开始 ====
+==== 数据标准化结束 ====
+encoding finish
+feature finish
 bagging finish
 xgboost finish
 bayesianridge finish
