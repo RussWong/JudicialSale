@@ -6,10 +6,10 @@ Transaction_Cycle
 Ladder_Ratio
 Renovation
 Elevator
-Longitude
+Latitude
 Household
 Num_Look
-Latitude
+Longitude
+Construction_struct
 Ladder
 Attention
-Construction_struct

@@ -10,33 +10,47 @@ from bs4 import BeautifulSoup
 
 # raw_data 输入预测的dataframe
 # encoder_path 输入的编码文件csv路径
-# path_standModel 输入标准化模型stand.pkl路径
-# path_stand_feature 输入txt
+# standModel _path输入标准化模型stand.pkl路径
 # model_path 预测模型的path
-def price_predict(raw_data, encoder_path, path_standModel, model_path):
-    cols = ['House_Type', 'Transaction_Cycle', 'Num_Look',
-       'Attention', 'Construction_Area', 'Age', 'Renovation',
-       'Construction_struct', 'Ladder_Ratio', 'Elevator', 'Storey', 'Ladder',
-       'Household', 'Region', 'Road', 'Community_Name']
-    select_feature = ['House_Type', 'Transaction_Cycle', 'Num_Look',
-       'Attention', 'Construction_Area', 'Age', 'Renovation',
-       'Construction_struct', 'Ladder_Ratio', 'Elevator', 'Storey', 'Ladder',
-       'Household', 'Longitude', 'Latitude']
-    cols_str = ['Renovation', 'Ladder_Ratio', 'Construction_struct', 'House_Type', 'Elevator']
-    column_stand = ['House_Type', 'Final_Price', 'Transaction_Cycle', 'Num_Price_Adjustment', 'Num_Look', 'Attention', 'Floor', 'Construction_Area', 'Type_Structure', 'Oriented', 'Age', 'Renovation', 'Construction_struct', 'Ladder_Ratio', 'Elevator', 'Trading_Authority', 'Housing_Purposes', 'Storey', 'Ladder', 'Household', 'Longitude', 'Latitude']
-    
-    
-    
-    data = raw_data.copy()
-    # 缺失处理---------------------------------！！！---------------
-#     data_err = []
-#     for i in range(len(data.isnull().sum(1))):
-#         if data.isnull().sum(1)[i] != 0:
-#             data_err.append(i)
+# select_feature_path 特征选择文件路径
+# column_stand_path 编码txt文件路径
+# cols_path
+def price_predict(raw_data, encoder_path, standModel_path, model_path, select_feature_path, column_stand_path, cols_path):
 
-#     fr = open(path_select_feature, 'r', encoding='UTF-8')
-#     cols = json.load(fr)
-#     fr.close()
+    # 读取文件，获得select_feature
+    fr = open(select_feature_path, 'r', encoding='UTF-8')
+    select_feature = []
+    for line in fr:
+        select_feature.append(line.strip())       
+    fr.close()
+    
+    # 读取文件，获得column_stand
+    fr = open(column_stand_path, 'r', encoding='UTF-8')
+    column_stand = []
+    for line in fr:
+        column_stand.append(line.strip())       
+    fr.close()
+
+    # 获取需要编码的str类型特征  cols_str  
+    fr = open(cols_path, 'r', encoding='UTF-8')
+    cols = json.load(fr)       
+    fr.close()
+    cols_str = []
+    for i in cols['str']:
+        if i in select_feature:
+            cols_str.append(i)
+  
+    # 输入数据缺失检查
+    data = raw_data.copy()
+    data_err = []
+    for i in range(len(data.isnull().sum(1))):
+        if data.isnull().sum(1)[i] != 0:
+            data_err.append(i)
+    if data_err:
+        print('以下输入数据存在缺失:')
+        print('第' + str(data_err)[1:-1] + '条')
+        return [-1]
+        # drop行-------------------------------------!------
 
     # 经纬度编码
     data['Location'] = data['Region'] + data['Road'] + data.copy()['Community_Name']
@@ -47,25 +61,29 @@ def price_predict(raw_data, encoder_path, path_standModel, model_path):
     encoder = pd.read_csv(encoder_path, index_col=0)
     data_encoding = data_encoding_predict(data_lat, cols_str, encoder)
 
-    # 编码失败---------------------------!!!--------------------------------
-#     encode_err = []
-#     for i in range(len(data_encoding.isnull().sum(1))):
-#         if data_encoding.isnull().sum(1)[i] != 0:
-#             encode_err.append(i)
+    # 编码失败检测
+    encode_err = []
+    for i in range(len(data_encoding.isnull().sum(1))):
+        if data_encoding.isnull().sum(1)[i] != 0:
+            encode_err.append(i)
+    if encode_err:
+        print('以下输入数据编码失败:')
+        print('第' + str(encode_err)[1:-1] + '条')
+        return [-1]
+        # drop行-------------------------------------!------
 
     # 数据标准化
     data_norm = predict_standardization(data=data_encoding,
                                          mode='predict',
                                          target='Final_Price',
-                                         path_model=path_standModel,
+                                         path_model=standModel_path,
                                          column_stand=column_stand,
                                          select_feature=select_feature)
-
-
 
     # 预测
     predictor = joblib.load(model_path)
     result = predictor.predict(data_norm)
+    result = list(result)
 
 
     return result
