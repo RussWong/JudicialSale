@@ -129,5 +129,5 @@ async def predict_prediction(house: House):
 
 
 if __name__ == '__main__':
-    uvicorn.run(app, port=9200, host='0.0.0.0')
+    uvicorn.run(app, port=9050, host='0.0.0.0')
 
