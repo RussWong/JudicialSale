@@ -44,8 +44,8 @@ class missing_analysis:
             x2=x[x<=threshould*100]
             y1=y[x>threshould*100]
             y2=y[x<=threshould*100]
-            b2=plt.barh(y2[x2>=0.5],x2[x2>=0.5])
-            b1=plt.barh(y1[x1>0.5],x1[x1>0.5])
+            b2=plt.barh(y2[x2>=threshould],x2[x2>=threshould])
+            b1=plt.barh(y1[x1>threshould],x1[x1>threshould])
             for rect in b1:
                 w=rect.get_width()#value of the missing rate (in barh-plot,the width represents the value)
                 plt.text(w,rect.get_y()+rect.get_height()/2,'%.2f'%(w),ha='left',va='center',fontsize=25)
