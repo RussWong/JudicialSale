@@ -89,7 +89,7 @@ class constraint_analysis:
         Args:
             data_raw: Input dataframe
             col1: One of the columns to be examined
-            col1: The other column to be examined
+            col2: The other column to be examined
         Returns:
             res: The indexes of the records don't satisfy the relationship that col1 >= col2
         '''
@@ -105,7 +105,7 @@ class constraint_analysis:
         Args:
             data_raw: Input dataframe
             col1: One of the columns to be examined
-            col1: The other column to be examined
+            col2: The other column to be examined
         Returns:
             res: The indexes of the records don't satisfy the relationship that col1 <= col2
         '''
@@ -121,7 +121,7 @@ class constraint_analysis:
         Args:
             data_raw: Input dataframe
             col1: One of the columns to be examined
-            col1: The other column to be examined
+            col2: The other column to be examined
         Returns:
             res: The indexes of the records don't satisfy the relationship that col1 != col2
         '''
@@ -136,7 +136,7 @@ class constraint_analysis:
         '''check whether a categorical data contains invalid characters
         Args:
             data_raw: Input dataframe
-            col1: The columns to be examined
+            cols: The columns to be examined
         Returns:
             res: The indexes of the records that contain invalid characters
         '''
