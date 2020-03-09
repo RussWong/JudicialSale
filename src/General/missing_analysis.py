@@ -120,7 +120,7 @@ class missing_analysis:
         Args:
             data_raw: Input timeseries with the index being timestamp
             start_time: The earliest timestamp required
-            start_time: The latest timestamp required
+            finish_time: The latest timestamp required
 
         Returns:
             isInteg: Bool,True if integrity test passed
