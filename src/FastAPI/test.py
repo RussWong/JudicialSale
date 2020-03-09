@@ -113,10 +113,17 @@ async def predict_prediction(house: House):
 
     output_path = '../../output/Price_System/Price_Predict/results/'
     encoder_path='../../output/Price_System/Price_Predict/results/encoder.csv'
-    path_standModel='../../output/Price_System/Price_Predict/model/stand.pkl'
-    model_path = '../../output/Price_System/Price_Predict/model/price_predict_bagging.pkl'
+    encoder_path='../../../output/Price_System/Price_Predict/results/encoder.csv'
+    standModel_path='../../../output/Price_System/Price_Predict/model/stand.pkl'
+    model_path='../../../output/Price_System/Price_Predict/model/price_predict_bagging.pkl'
+    select_feature_path='../../../output/Price_System/Price_Predict/results/feature.txt'
+    column_stand_path='../../../output/Price_System/Price_Predict/results/featureOrder.txt'
+    cols_path='../../../output/Price_System/Price_Predict/results/cols.json'
     
-    predict_result = price_predict(raw_data=raw_data,encoder_path=encoder_path,path_standModel=path_standModel,model_path=model_path)
+    predict_result = price_predict(raw_data=raw_data, encoder_path=encoder_path, 
+                                   standModel_path=standModel_path, model_path=model_path, 
+                                   select_feature_path=select_feature_path, column_stand_path=column_stand_path, 
+                                   cols_path=cols_path)
     return list(predict_result)
 
 if __name__ == '__main__':
