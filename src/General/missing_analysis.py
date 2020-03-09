@@ -123,7 +123,7 @@ class missing_analysis:
             start_time: The latest timestamp required
 
         Returns:
-            iso_nteg: Bool,True if integrity test passed
+            isInteg: Bool,True if integrity test passed
             firt_time: The earliest timestamp of the data
             last_time: The latest timestamp of the data
         '''
@@ -155,7 +155,7 @@ class missing_analysis:
             violation_threshould: Amount allowed for uncontinuous periods
 
         Returns:
-            is_contin: Bool,True if integrity test passed
+            isContin: Bool,True if integrity test passed
             missing_index:missing timestamps
         '''
         data=copy.deepcopy(data_raw)
