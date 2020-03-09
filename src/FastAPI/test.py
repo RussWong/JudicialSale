@@ -4,6 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 import uvicorn
 import pandas as pd
+import numpy as np
 
 import sys
 sys.path.append('../Price_System/Price_Predict/')
@@ -124,7 +125,9 @@ async def predict_prediction(house: House):
                                    standModel_path=standModel_path, model_path=model_path, 
                                    select_feature_path=select_feature_path, column_stand_path=column_stand_path, 
                                    cols_path=cols_path)
-    return list(predict_result)
+    predict_result = result.round(2)
+    return '该房产价格预估为'+str(predict_result)+'万元'
+
 
 if __name__ == '__main__':
     uvicorn.run(app, port=9050, host='0.0.0.0')
