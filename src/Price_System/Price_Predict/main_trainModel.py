@@ -127,12 +127,7 @@ print('model train finish')
 
 
 
-# # 模型预测bagging
-# model_path = '../../../output/Price_System/Price_Predict/model/price_predict_bagging.pkl'
-# data_path = '../../../Data/Price_System/Price_Predict/feature/house/used_house_data_feature.csv'
-# result = predict_prediction(model_path=model_path,
-#                             data_path=data_path,
-#                             name_of_target='Final_Price')
+
 
 # # 模型分析bagging
 # name_of_model = 'bagging'
@@ -144,13 +139,6 @@ print('model train finish')
 #                  data_path=data_path,
 #                  output_path=output_path)
 
-
-# # 模型预测xgboost
-# model_path = '../../../output/Price_System/Price_Predict/model/price_predict_xgboost.pkl'
-# data_path = '../../../Data/Price_System/Price_Predict/feature/house/used_house_data_feature.csv'
-# result = predict_prediction(model_path=model_path,
-#                             data_path=data_path,
-#                             name_of_target='Final_Price')
 
 # # 模型分析xgboost
 # name_of_model = 'xgboost'
