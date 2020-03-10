@@ -12,11 +12,13 @@ from bs4 import BeautifulSoup
 # encoder_path 输入的编码文件csv路径
 # standModel _path输入标准化模型stand.pkl路径
 # model_path 预测模型的path
+# model_forMissing_path 处理缺失输入的模型path
 # select_feature_path 特征选择文件路径
 # column_stand_path 编码txt文件路径
-# cols_path
-def price_predict(raw_data, encoder_path, standModel_path, model_path, select_feature_path, column_stand_path, cols_path):
-
+# cols_path 训练数据集所有列信息
+def price_predict(raw_data, encoder_path, standModel_path, model_path, model_forMissing_path, select_feature_path, column_stand_path, cols_path):
+    flag = False #是否使用缺失模型
+    
     # 读取文件，获得select_feature
     fr = open(select_feature_path, 'r', encoding='UTF-8')
     select_feature = []
@@ -45,32 +47,32 @@ def price_predict(raw_data, encoder_path, standModel_path, model_path, select_fe
     data_err = []
     for i in range(len(data.isnull().sum(1))):
         if data.isnull().sum(1)[i] != 0:
-            data_err.append(i)
+            data_err.append(i+1)
     if data_err:
         print('以下输入数据存在缺失:')
         print('第' + str(data_err)[1:-1] + '条')
-        return [-1]
-        # drop行-------------------------------------!------
+        flag = True
 
     # 经纬度编码
     data['Location'] = data['Region'] + data['Road'] + data.copy()['Community_Name']
     data.drop(['Region', 'Road', 'Community_Name'], axis=1, inplace=True)
     data_lat = data_latlng(data)
+    print('经纬度编码结束')
 
     # 数据编码
     encoder = pd.read_csv(encoder_path, index_col=0)
     data_encoding = data_encoding_predict(data_lat, cols_str, encoder)
+    print('字符类型编码结束')
 
     # 编码失败检测
     encode_err = []
     for i in range(len(data_encoding.isnull().sum(1))):
         if data_encoding.isnull().sum(1)[i] != 0:
-            encode_err.append(i)
+            encode_err.append(i+1)
     if encode_err:
         print('以下输入数据编码失败:')
         print('第' + str(encode_err)[1:-1] + '条')
-        return [-1]
-        # drop行-------------------------------------!------
+        flag = True
 
     # 数据标准化
     data_norm = predict_standardization(data=data_encoding,
@@ -79,7 +81,13 @@ def price_predict(raw_data, encoder_path, standModel_path, model_path, select_fe
                                          path_model=standModel_path,
                                          column_stand=column_stand,
                                          select_feature=select_feature)
+    print('数据标准化结束')
 
+    # 选择模型
+    if flag:
+        model_path = model_forMissing_path
+        print('改为能处理缺失的模型预测')
+    
     # 预测
     predictor = joblib.load(model_path)
     result = predictor.predict(data_norm)
@@ -159,12 +167,12 @@ def data_standardization(raw_data, target, path, mode='train', method='Robust'):
         Leave room for future improvement.
 
     """
-    print('==== 数据标准化开始 ====')
+#     print('==== 数据标准化开始 ====')
     data = raw_data.copy()
     columns = list(data.columns)
     if target in columns:
         columns.remove(target)
-        print('remove target')
+#         print('remove target')
 
     if mode == 'train':
         if method == 'Robust':
@@ -180,7 +188,7 @@ def data_standardization(raw_data, target, path, mode='train', method='Robust'):
 
     data[columns] = pd.DataFrame(scaler.transform(data[columns]), columns=columns)
 
-    print('==== 数据标准化结束 ====')
+#     print('==== 数据标准化结束 ====')
 
     return data
 
