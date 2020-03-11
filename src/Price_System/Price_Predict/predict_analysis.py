@@ -12,7 +12,7 @@ def predict_analysis(model_path, name_of_model, data_path, output_path):
     model = joblib.load(model_path)
     X_train = pd.read_csv(data_path)
 
-<<<<<<< HEAD
+
     X_train.rename(columns={'House_Type':'房型',
                             'Transaction_Cycle':'交易周期',
                             'Num_Look':'带看次数',
@@ -30,8 +30,7 @@ def predict_analysis(model_path, name_of_model, data_path, output_path):
                             'Latitude':'纬度'},
                    inplace=True)
     
-=======
->>>>>>> 3a5e426d013f05a130aea20b1831b69a92ebe45b
+
     index, shap_mean_df = shap_compute(X_train, model, name_of_model)
     fig = plt.figure(figsize=(10, 8))
     ax = fig.add_subplot(111)
