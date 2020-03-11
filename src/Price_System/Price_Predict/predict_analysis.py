@@ -18,7 +18,7 @@ def predict_analysis(model_path, name_of_model, data_path, output_path):
     ax.barh(index, shap_mean_df['shap_mean_values'].values)
     ax.set_yticks(index)
     ax.set_yticklabels(shap_mean_df['columns_name'].values)
-    ax.set_xlabel('mean(|shap_value|) average impact on model output', size=15)
+    ax.set_xlabel('shaply值参数重要性', size=15)
 
     plt.savefig(output_path)
 
