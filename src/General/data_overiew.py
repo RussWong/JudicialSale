@@ -36,6 +36,11 @@ def data_type_split(data_raw,cols=None,unique_threshould=30):
         num_data=data_raw.loc[:,cols['numeric']]
         cat_data=data_raw.loc[:,cols['categorical']]
         str_data=data_raw.loc[:,cols['string']]
+        if num_data.shape[0]==0:
+            num_data=None
+        if cat_data.shape[0]==0:
+            cat_data=None
+        if str_data.shape[0]==0:
         return num_data,cat_data,str_data,None
     else:
         num_data=pd.DataFrame()
