@@ -10,7 +10,7 @@ from datetime import timedelta
 plt.rcParams['font.sans-serif']=['SimHei']
 plt.rcParams['axes.unicode_minus']=False
 class missing_analysis:
-    def col_isnull(data_raw,threshould=0.5,isNeed_plot=False,fig_size=None,path='./',filename='missing_rate_feature'):
+    def col_isnull(data_raw,threshould=0.5,isNeed_plot=False,fig_size=None,fontsize=25,path='./',filename='missing_rate_feature'):
         '''Compute missing rate of the input  feature by feature
 
         Args:
@@ -48,15 +48,15 @@ class missing_analysis:
             b1=plt.barh(y1[x1>0],x1[x1>0])
             for rect in b1:
                 w=rect.get_width()#value of the missing rate (in barh-plot,the width represents the value)
-                plt.text(w,rect.get_y()+rect.get_height()/2,'%.2f'%(w),ha='left',va='center',fontsize=25)
+                plt.text(w,rect.get_y()+rect.get_height()/2,'%.2f'%(w),ha='left',va='center',fontsize=fontsize)
             for rect in b2:
                 w=rect.get_width()#value of the missing rate (in barh-plot,the width represents the value)
-                plt.text(w,rect.get_y()+rect.get_height()/2,'%.2f'%(w),ha='left',va='center',fontsize=25)
+                plt.text(w,rect.get_y()+rect.get_height()/2,'%.2f'%(w),ha='left',va='center',fontsize=fontsize)
             plt.xlim([0,110])
-            plt.yticks(ticks=y[x>0],fontsize=25)
+            plt.yticks(ticks=y[x>0],fontsize=fontsize)
             plt.xticks(fontsize=25)
-            plt.xlabel('missing rate(%)',fontsize=25)
-            plt.title('Feature Missing Rate Statistics ',fontsize=25)
+            plt.xlabel('missing rate(%)',fontsize=fontsize)
+            plt.title('Feature Missing Rate Statistics ',fontsize=fontsize)
             if not os.path.exists(path):
                 os.mkdir(path)
             plt.tight_layout()
@@ -64,6 +64,7 @@ class missing_analysis:
             print('Feature missing rate plotted!')
         invalid_cols=rate_series>threshould
         return invalid_cols
+
     def row_isnull(data_raw,threshould=0.5,path='./',filename='highly_missing_sample'):
         '''compute missing rate of the input  sample by sample
         Args:
