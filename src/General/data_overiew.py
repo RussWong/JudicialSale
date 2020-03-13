@@ -308,7 +308,7 @@ def plot_gen_unicount(data,figsize=None,fontsize=25,path='./',filename='unique_c
     plt.savefig(path+filename+'.png')
     plt.show()
 
-def plot_num_dist(data,figsize=(25,25),fontsize=25,path='./numeric_data_distribution'):
+def plot_num_dist(data,figsize=(25,25),fontsize=25,path='./numeric_data_distribution/'):
     '''plot the distribution for all the numeric columns
     Args:
         data: Input numeric data to plot 
@@ -332,7 +332,7 @@ def plot_num_dist(data,figsize=(25,25),fontsize=25,path='./numeric_data_distribu
         plt.savefig(path+str(data.columns[i])+'.png')
         plt.show()
 
-def plot_cat_dist(data,figsize=(25,25),fontsize=25,bar_limit=15,path='./categorical_data_distribution'):
+def plot_cat_dist(data,figsize=(25,25),fontsize=25,bar_limit=15,path='./categorical_data_distribution/'):
     '''plot the distribution for all the categorical columns
     Args:
         data: Input categorical data to plot 
