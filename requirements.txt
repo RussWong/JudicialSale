@@ -17,5 +17,5 @@ seaborn==0.10.0
 shap==0.34.0
 tqdm==4.41.1
 uvicorn==0.11.3
-xgboost==0.90
+xgboost==1.1.0
 yellowbrick==1.1
