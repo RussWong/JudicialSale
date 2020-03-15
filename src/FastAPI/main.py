@@ -14,6 +14,7 @@ from search_results import search_house
 
 app = FastAPI()
 
+
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
@@ -61,7 +62,9 @@ async def price_system(request: Request,
                       Transaction_Cycle: int = Form(...),
                       Num_Look : int = Form(...),
                       Attention : int = Form(...),
-                      Household: int = Form(...)):#请求参数
+                      Household: int = Form(...)
+                      ):#请求参数
+
     input_search={
           'Region': Region,
           'Road': Road,
@@ -74,28 +77,40 @@ async def price_system(request: Request,
           'Hall': House_Type[-2:],
           'Struction': Construction_struct
           }
+
     search_output_path = '../../output/Price_System/Similar_Search/results/'
     database = 'house'
     size=10
     similar_house = search_house(input_data=input_search,size=size,output_path=search_output_path,database=database)
     
     input_price = {'Region':Region,
-                  'Road':Road,
-                  'Community_Name':Community_Name,
-                  'House_Type':House_Type,
-                  'Construction_Area':Construction_Area,
-                  'Age':Age,
-                  'Renovation':Renovation,
-                  'Construction_struct':Construction_struct,
-                  'Ladder_Ratio':Ladder_Ratio,
-                  'Elevator':Elevator,
-                  'Storey':Storey,
-                  'Ladder':Ladder,
-                  'Transaction_Cycle':Transaction_Cycle,
-                  'Num_Look':Num_Look,
-                  'Attention':Attention,
-                  'Household':Household
-                  }    
+                   'Road':Road,
+                   'Community_Name':Community_Name,
+                   'House_Type':House_Type,
+                   'Construction_Area':Construction_Area,
+                   'Age':Age,
+                   'Renovation':Renovation,
+                   'Construction_struct':Construction_struct,
+                   'Ladder_Ratio':Ladder_Ratio,
+                   'Elevator':Elevator,
+                   'Storey':Storey,
+                   'Ladder':Ladder,
+                   'Transaction_Cycle':Transaction_Cycle,
+                   'Num_Look':Num_Look,
+                   'Attention':Attention,
+                   'Household':Household
+                   }    
+                   
+    if input_price['Transaction_Cycle'] == -1:
+      input_price['Transaction_Cycle'] = None
+    if input_price['Num_Look'] == -1:
+      input_price['Num_Look'] = None
+    if input_price['Attention'] == -1:
+      input_price['Attention'] = None
+    if input_price['Household'] == -1:
+      input_price['Household'] = None 
+
+    print(input_price)
     raw_data=pd.DataFrame(input_price,index=[0])
 
     output_path = '../../output/Price_System/Price_Predict/results/'

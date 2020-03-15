@@ -1,6 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://cdn.staticfile.org/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+      $("#h01").submit(function(e){
+            if($("[name=Transaction_Cycle]").val()==""){
+                $("[name=Transaction_Cycle]").val("-1");
+            }
+            if($("[name=Num_Look]").val()==""){
+                $("[name=Num_Look]").val("-1");
+            }
+            if($("[name=Attention]").val()==""){
+                $("[name=Attention]").val("-1");
+            }
+            if($("[name=Household]").val()==""){
+                $("[name=Household]").val("-1");
+            }
+            return true;
+      });
+    });
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -20,11 +40,11 @@
     </ul>
     </div>
 </div>
-    <form method="POST" enctype="multipart/form-data" action="/price_system/house/results">
+    <form id="h01" method="POST" enctype="multipart/form-data" action="/price_system/house/results">
         <table align='center'>
             <legend align='center'>请输入房屋基本信息:</legend>
             <tr>
-                <td class='col1'>区域：</td>
+                <td class='col1'>市辖区：</td>
                 <td><input name='Region' placeholder="浦东"></td>
             </tr>
             <tr>
@@ -46,7 +66,7 @@
                 </td>
             </tr>
             <tr>
-                <td class='col1'>年份：</td>
+                <td class='col1'>建成年份：</td>
                 <td><input name='Age' placeholder="2013" ></td>
             </tr>
             <tr>
@@ -90,7 +110,7 @@
                 <td><input name='Ladder' placeholder="2" ></td>
             </tr>
             <tr>
-                <td class='col1'>交易次数：</td>
+                <td class='col1'>交易周期：</td>
                 <td><input name='Transaction_Cycle' placeholder="2" ></td>
             </tr>
             <tr>
