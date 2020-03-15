@@ -16,7 +16,9 @@ plt.rcParams['axes.unicode_minus']=False
 
 # automatic data-type check function
 
-def data_type_split(data_raw,cols=None,unique_threshould=30):
+UNIQUE_THRESHOLD=30
+
+def data_type_split(data_raw,cols=None,unique_threshould=UNIQUE_THRESHOLD):
     '''Split the data into numeric columns, categorical columns, string columns and unknown columns
     Args:
         data_raw: Input dataframe
@@ -41,6 +43,7 @@ def data_type_split(data_raw,cols=None,unique_threshould=30):
         if cat_data.shape[0]==0:
             cat_data=None
         if str_data.shape[0]==0:
+            str_data=None
         return num_data,cat_data,str_data,None
     else:
         num_data=pd.DataFrame()
@@ -269,10 +272,22 @@ def get_var_type(series: pd.Series, unique_threshold=30) -> dict:
     return series_description
 
 # plot functions
-def plot_gen_unicount(data,figsize=None,fontsize=25,path='./',filename='unique_count'):
+FILE_PATH = './myplot/'
+SUBPATH_NUM_DIST='numeric_distribution/'
+SUBPATH_CAT_DIST='categorical_distribution/'
+FIGURE_SIZE = 1.4
+FONT_SIZE = 1
+MAX_BAR_NUM=15
+NARROW_BAR_NUM=5
+UNIQUE_COUNT_FIGURENAME='unique_count'
+COR_HEATMAP_FIGURENAME='numeric data correlation'
+
+def get_unicount(data,is_plot=True,is_save=False,figsize=FIGURE_SIZE,fontsize=FONT_SIZE,path=FILE_PATH,filename=UNIQUE_COUNT_FIGURENAME):
     '''plot the unique count for all the data columns
     Args:
         data: Input data to plot the unique count
+        is_plot: Flag to decide whether to plot the figure
+        is_save: Flag to decide whether to save the figure
         figsize: Size of the figure
         fontsize: Size of the font in the figure
         path: Path to save the figure
@@ -286,32 +301,60 @@ def plot_gen_unicount(data,figsize=None,fontsize=25,path='./',filename='unique_c
         Num_unique=tempdf.unique().shape[0]
         unicount_series[col]=Num_unique
     unicount_series=unicount_series.rename('unique_counts')
-    if not figsize:
-        figsize=(data.columns.shape[0]*2,25)
-    fig=plt.figure(figsize=figsize)
-    data_plt=unicount_series.sort_values(ascending=True)
-    #     print(data_plt)
-    y=data_plt.values
-    x=data_plt.index
-    b=plt.barh(x,y)
-    for rect in b:
-        w=rect.get_width()
-        plt.text(w,rect.get_y()+rect.get_height()/2,'%d'%(w),ha='left',va='center',fontsize=fontsize)
-    plt.xlim([0,y.max()*1.1])
-    plt.yticks(ticks=x,fontsize=fontsize)
-    plt.xticks(fontsize=fontsize)
-    plt.xlabel('unique counts',fontsize=fontsize)
-    plt.title('Data Unique Count Statistics',fontsize=fontsize)
-    if not os.path.exists(path):
-        os.mkdir(path)
-    plt.tight_layout()
-    plt.savefig(path+filename+'.png')
-    plt.show()
+    if is_plot:
+        fig_unitsize=np.array([6,get_adaptive_size(data.columns.shape[0])])
+        plt.figure(figsize=tuple(figsize * fig_unitsize))
+        data_plt=unicount_series.sort_values(ascending=True)
+        y=data_plt.values
+        x=data_plt.index
+        b=plt.barh(x,y)
+        for rect in b:
+            w=rect.get_width()
+            plt.text(w,rect.get_y()+rect.get_height()/2,'%d'%(w),ha='left',va='center',fontsize=fontsize*15)
+        
+        plt.xlim([0,y.max()*1.08])
+        plt.yticks(ticks=x,fontsize=15*fontsize)
+        plt.xticks(fontsize=15*fontsize)
+        plt.xlabel('unique counts',fontsize=20*fontsize)
+        plt.title('Data Unique Count Statistics',fontsize=20*fontsize)
+        plt.show()
+    if is_save:
+        if not os.path.exists(path):
+            os.mkdir(path)
+        plt.tight_layout()
+        plt.savefig(path+filename+'.png')
+        
+    return unicount_series
+def plot_dist(data,cols=None,is_annot_null=False,is_save=False,figsize=FIGURE_SIZE,fontsize=FONT_SIZE,path_num=FILE_PATH+SUBPATH_NUM_DIST,path_cat=FILE_PATH+SUBPATH_CAT_DIST):
+    '''plot the distribution for all the numeric and categorical columns
+    Args:
+        data: Input data to plot
+        cols: The labels of the columns ('numeric','categorical','string')
+        is_annot_null: Flag to decide whether to annotate the missing data that are not plotted in the figure
+        is_save: Flag to decide whether to save the figure
+        figsize: Size of the figure
+        fontsize: Size of the font in the figure
+        path_num: Path to save the figure of the numeric data distribution
+        path_cat: Path to save the figure of the categorical data distribution
+    Returns:
+        None
+    '''
+    data_num,data_cat,data_str,data_unknown=data_type_split(data,cols)
+    if data_str:
+        print('Warning: columns '+','.join(data_str.columns)+' not support!')
+    if data_unknown:
+        print('Warning: columns '+','.join(data_unknown.columns)+' not support!')
+    for col in data_cat.columns:
+        data_cat.loc[data_cat[col].notnull(),col]= data_cat.loc[data_cat[col].notnull(),col].apply(lambda x:str(x))
+    plot_num_dist(data_num,is_annot_null=is_annot_null,is_save=is_save,figsize=figsize,fontsize=fontsize,path=path_num)
+    plot_cat_dist(data_cat,is_annot_null=is_annot_null,is_save=is_save,figsize=figsize,fontsize=fontsize,path=path_cat)
 
-def plot_num_dist(data,figsize=(25,25),fontsize=25,path='./numeric_data_distribution/'):
+def plot_num_dist(data,is_annot_null=False,is_save=False,figsize=FIGURE_SIZE,fontsize=FONT_SIZE,path=FILE_PATH+SUBPATH_NUM_DIST):
     '''plot the distribution for all the numeric columns
     Args:
-        data: Input numeric data to plot 
+        data: Input numeric data to plot
+        is_annot_null: Flag to decide whether to annotate the missing data that are not plotted in the figure
+        is_save: Flag to decide whether to save the figure
         figsize: Size of the figure
         fontsize: Size of the font in the figure
         path: Path to save the figure
@@ -319,23 +362,36 @@ def plot_num_dist(data,figsize=(25,25),fontsize=25,path='./numeric_data_distribu
         None
     '''
     Num_all=data.columns.shape[0]
-    if not os.path.exists(path):
-        os.mkdir(path)
+    if is_save:
+        if not os.path.exists(path):
+            os.mkdir(path)
     for i in range(Num_all):
-        plt.figure(i,figsize=figsize)
+        plt.figure(i,figsize=tuple(figsize * np.array([6.5, 6.5])))
         sns.distplot(data.iloc[:,i].dropna(),hist=True,kde=False,norm_hist=False,rug=False,vertical=False,label='distplot')
-        plt.xticks(fontsize=fontsize)
-        plt.yticks(fontsize=fontsize)
-        plt.xlabel('value',fontsize=fontsize)
-        plt.title('Numeric Data '+data.columns[i]+' Distribution',fontsize=fontsize)
+        plt.xticks(fontsize=fontsize*15)
+        plt.yticks(fontsize=fontsize*15)
+        plt.xlabel('value',fontsize=fontsize*20)
+        plt.title('Numeric Data '+data.columns[i]+' Distribution',fontsize=fontsize*20)
+        if is_annot_null:
+            text = 'Counted records: ' +( str(data.iloc[:,i].dropna().shape[0]) + '\n'
+            +'Uncounted records:' + str(data.iloc[:,i].isnull().sum()))
+            bottom_y, top_y = plt.ylim()
+            bottom_x, top_x = plt.xlim()
+            plt.ylim(bottom_y, top_y * 1.2)
+            axis_y = top_y*1.1
+            axis_x = -0.35*(top_x-bottom_x)+top_x
+            plt.text(x=axis_x, y=axis_y, s=text, fontsize=fontsize * 15)
         plt.tight_layout()
-        plt.savefig(path+str(data.columns[i])+'.png')
+        if is_save:
+            plt.savefig(path+str(data.columns[i])+'.png')
         plt.show()
 
-def plot_cat_dist(data,figsize=(25,25),fontsize=25,bar_limit=15,path='./categorical_data_distribution/'):
+def plot_cat_dist(data,is_annot_null=False,is_save=False,figsize=FIGURE_SIZE,fontsize=FONT_SIZE,path=FILE_PATH+SUBPATH_CAT_DIST):
     '''plot the distribution for all the categorical columns
     Args:
         data: Input categorical data to plot 
+        is_annot_null: Flag to decide whether to annotate the missing data that are not plotted in the figure
+        is_save: Flag to decide whether to save the figure
         figsize: Size of the figure
         fontsize: Size of the font in the figure
         path: Path to save the figure
@@ -343,28 +399,44 @@ def plot_cat_dist(data,figsize=(25,25),fontsize=25,bar_limit=15,path='./categori
         None
     '''
     Num_all=data.columns.shape[0]
-    if not os.path.exists(path):
-        os.mkdir(path)
+    if is_save:
+        if not os.path.exists(path):
+            os.mkdir(path)
     for i in range(Num_all):
-        plt.figure(i,figsize=figsize)
         str_counts=data.iloc[:,i].value_counts()
+        
         xlabelname='values'
-        if len(str_counts)>bar_limit:
-            str_counts=str_counts.sort_values(ascending=False).iloc[0:bar_limit]
-            xlabelname='top %d values'%bar_limit
-        plt.bar(str_counts.index,str_counts.values)
-        plt.xticks(rotation=90,fontsize=fontsize)
-        plt.yticks(fontsize=fontsize)
-        plt.xlabel(xlabelname,fontsize=fontsize)
-        plt.title('Categorical Data '+data.columns[i]+' Distribution',fontsize=fontsize)
+        if len(str_counts)>MAX_BAR_NUM:
+            str_counts=str_counts.sort_values(ascending=False).iloc[0:MAX_BAR_NUM]
+            xlabelname='top %d values'%MAX_BAR_NUM
+        plt.figure(i,figsize=tuple(figsize * np.array([get_adaptive_size(str_counts.shape[0]), 6.5])))
+        plt.bar(str_counts.index,str_counts.values,width=0.8)
+        plt.xticks(rotation=90,fontsize=fontsize*15)
+        plt.yticks(fontsize=fontsize*15)
+        plt.xlabel(xlabelname,fontsize=fontsize*20)
+        plt.title('Categorical Data '+data.columns[i]+' Distribution',fontsize=fontsize*20)
         plt.tight_layout()
-        plt.savefig(path+str(data.columns[i])+'.png')
+        if is_annot_null:
+            text = 'Counted records: ' +( str(data.iloc[:,i].dropna().shape[0]) + '\n'
+            +'Uncounted records:' + str(data.iloc[:,i].isnull().sum()))
+            bottom_y, top_y = plt.ylim()
+            bottom_x, top_x = plt.xlim()
+            plt.ylim(bottom_y, top_y * 1.2)
+            axis_y = top_y*1.1
+            if str_counts.shape[0]>2:
+                axis_x = (top_x - bottom_x)/str_counts.shape[0]* (-2) + top_x
+            else:
+                axis_x = (top_x - bottom_x)/str_counts.shape[0]* (-1) + top_x
+            plt.text(x=axis_x, y=axis_y, s=text, fontsize=fontsize * 15)
+        if is_save:
+            plt.savefig(path+str(data.columns[i])+'.png')
         plt.show()
     
-def plot_num_correlation(data,figsize=None,fontsize=25,annot_size=15,leagend_size=20,path='./',filename='numeric data correlation'):
+def plot_num_correlation(data,is_save=False,figsize=FIGURE_SIZE,fontsize=FONT_SIZE,path=FILE_PATH,filename=COR_HEATMAP_FIGURENAME):
     '''plot the correlation heatmap for all the numeric columns
     Args:
-        data: Input numeric data to plot 
+        data: Input numeric data to plot
+        is_save: Flag to decide whether to save the figure
         figsize: Size of the figure
         fontsize: Size of the font in the figure
         annot_size: Size of the annotation in the heatmap
@@ -374,18 +446,34 @@ def plot_num_correlation(data,figsize=None,fontsize=25,annot_size=15,leagend_siz
         None
     '''
     if not figsize:
-        figsize=(data.columns.shape[0]*1.5,data.columns.shape[0]*1.5)
-    plt.figure(figsize=figsize)
-    sns.heatmap(data.corr(), annot=True, vmax=1, square=True,cmap='Blues',annot_kws={'size':annot_size,'weight':'bold', 'color':'black'},fmt=".2f")
+        figsize=(data.columns.shape[0]*1.25,data.columns.shape[0]*1.25)
+    plt.figure(figsize=figsize*np.array([6.5,6.5]))
+    sns.heatmap(data.corr(), annot=True, vmax=1, square=True,cmap='Blues',annot_kws={'size':12.5,'weight':'bold', 'color':'black'},fmt=".2f")
     cax = plt.gcf().axes[-1]
-    cax.tick_params(labelsize=leagend_size)
-    plt.xticks(rotation=90,fontsize=fontsize)
-    plt.yticks(rotation=0,fontsize=fontsize)
-    plt.xlabel('numeric columns',fontsize=fontsize)
-    plt.title('Numeric Data Correlation Statistics',fontsize=fontsize)
+    cax.tick_params(labelsize=12.5)
+    plt.xticks(rotation=90,fontsize=fontsize*15)
+    plt.yticks(rotation=0,fontsize=fontsize*15)
+    plt.xlabel('numeric columns',fontsize=fontsize*20)
+    plt.title('Numeric Data Correlation Statistics',fontsize=fontsize*20)
     if not os.path.exists(path):
         os.mkdir(path)
     plt.tight_layout()
     plt.savefig(path+filename+'.png')
     plt.show()
 
+def get_adaptive_size(num_bar:int,low_threshold=NARROW_BAR_NUM,high_threshold=MAX_BAR_NUM)->float:
+    '''Calculate the proper size for the bar plots,based on the number of the bars
+    Args:
+        num_bar: The number of the bars
+        low_threshold: The minimum size (width/height) of the bar(h) plot
+        high_threshold: The maxinum size (width/height) of the bar(h) plot
+    Returns:
+        res: the opitmum size,width for bar plots and height for barh plots
+    '''
+    if num_bar<low_threshold:
+        res= 1*low_threshold
+    elif num_bar<high_threshold:
+        res= 1.25*(num_bar-low_threshold)+low_threshold
+    else:
+        res 1.25*(high_threshold-low_threshold)+low_threshold
+    retuen res
