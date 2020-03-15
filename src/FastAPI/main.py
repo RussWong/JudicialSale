@@ -132,5 +132,5 @@ async def price_system(request: Request,
 
 
 if __name__ == '__main__':
-    uvicorn.run(app, port=9050, host='127.0.0.1')
+    uvicorn.run(app, port=9050, host='0.0.0.0')
 
