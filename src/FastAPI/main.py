@@ -5,6 +5,20 @@ from fastapi.templating import Jinja2Templates
 import uvicorn
 import pandas as pd
 import numpy as np
+import json
+   
+class NpEncoder(json.JSONEncoder):
+  def default(self, obj):
+    if isinstance(obj, np.integer):
+      return int(obj)
+    elif isinstance(obj, np.floating):
+      return round(float(obj),2)
+    elif isinstance(obj, np.ndarray):
+      return obj.tolist()
+    if isinstance(obj, time):
+      return obj.__str__()
+    else:
+      return super(NpEncoder, self).default(obj)
 
 import sys
 sys.path.append('../Price_System/Price_Predict/')
@@ -50,13 +64,34 @@ async def create_upload_files(
     file: UploadFile = File(...)
 ):
     contents = await file.read()
-    with open('test.csv','wb') as f:
-        f.write(contents)
+    with open('test.csv','rb') as f:
+      lines = f.readlines()
+      for line in lines:
+        content = line.decode('utf8','ignore')
+    #    f.write(contents)
     #test.csv就是用户上传的文件，存在当前目录下
-    input_data = pd.read_csv('test.csv')
-    #价格预测模块(全和胡博在这里补充)
+    input_data = pd.read_csv('test.csv',encoding='unicode_escape')
+    #价格预测模块
     
-    return {'contents': contents}
+    output_path = '../../output/Price_System/Price_Predict/results/'
+    encoder_path='../../output/Price_System/Price_Predict/results/encoder.csv'
+    standModel_path='../../output/Price_System/Price_Predict/model/stand.pkl'
+    model_path='../../output/Price_System/Price_Predict/model/price_predict_bagging.pkl'
+    model_forMissing_path='../../output/Price_System/Price_Predict/model/price_predict_xgboost.pkl'
+    select_feature_path='../../output/Price_System/Price_Predict/results/feature.txt'
+    column_stand_path='../../output/Price_System/Price_Predict/results/featureOrder.txt'
+    cols_path='../../output/Price_System/Price_Predict/results/cols.json'
+    
+    predict_result_list = price_predict(raw_data=input_data, encoder_path=encoder_path, 
+                                   standModel_path=standModel_path, model_path=model_path, model_forMissing_path=model_forMissing_path,
+                                   select_feature_path=select_feature_path, column_stand_path=column_stand_path, 
+                                   cols_path=cols_path)
+    print(predict_result_list)
+    price_list = [round(i,2) for i in predict_result_list]
+    print(price_list)
+    price = json.dumps(price_list,cls=NpEncoder)
+
+    return {'results': price}
 
 
 @app.post("/price_system/house/results")
