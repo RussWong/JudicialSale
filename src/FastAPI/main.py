@@ -64,13 +64,13 @@ async def create_upload_files(
     file: UploadFile = File(...)
 ):
     contents = await file.read()
-    with open('test.csv','rb') as f:
-      lines = f.readlines()
-      for line in lines:
-        content = line.decode('utf8','ignore')
-    #    f.write(contents)
+    with open('test.csv','wb') as f:
+      f.write(contents)
+    #  lines = f.readlines()
+    #  for line in lines:
+    #    content = line.decode('utf8','ignore')
     #test.csv就是用户上传的文件，存在当前目录下
-    input_data = pd.read_csv('test.csv',encoding='unicode_escape')
+    input_data = pd.read_csv('test.csv',encoding='unicode_escape',error_bad_lines=False)
     #价格预测模块
     
     output_path = '../../output/Price_System/Price_Predict/results/'
