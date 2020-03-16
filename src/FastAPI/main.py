@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from fastapi import FastAPI, Request, Form
+from fastapi import FastAPI, Request, Form, File, UploadFile
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 import uvicorn
@@ -44,6 +44,20 @@ async def price_system(request: Request):#方法名对应于URLfor中的名字
 @app.get("/price_system/house")
 async def house_form(request: Request):
     return templates.TemplateResponse("house_form.html", {"request": request})
+
+@app.post("/price_system/house/file_results/")
+async def create_upload_files(
+    file: UploadFile = File(...)
+):
+    contents = await file.read()
+    with open('test.csv','wb') as f:
+        f.write(contents)
+    #test.csv就是用户上传的文件，存在当前目录下
+    input_data = pd.read_csv('test.csv')
+    #价格预测模块(全和胡博在这里补充)
+    
+    return {'contents': contents}
+
 
 @app.post("/price_system/house/results")
 async def price_system(request: Request,
