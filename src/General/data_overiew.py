@@ -277,6 +277,8 @@ SUBPATH_NUM_DIST='numeric_distribution/'
 SUBPATH_CAT_DIST='categorical_distribution/'
 FIGURE_SIZE = 1.4
 FONT_SIZE = 1
+ANNOT_SIZE=12.5
+LEAGEND_SIZE=12.5
 MAX_BAR_NUM=15
 NARROW_BAR_NUM=5
 UNIQUE_COUNT_FIGURENAME='unique_count'
@@ -432,7 +434,7 @@ def plot_cat_dist(data,is_annot_null=False,is_save=False,figsize=FIGURE_SIZE,fon
             plt.savefig(path+str(data.columns[i])+'.png')
         plt.show()
     
-def plot_num_correlation(data,is_save=False,figsize=FIGURE_SIZE,fontsize=FONT_SIZE,path=FILE_PATH,filename=COR_HEATMAP_FIGURENAME):
+def plot_num_correlation(data,is_save=False,figsize=FIGURE_SIZE,fontsize=FONT_SIZE,annot_size=ANNOT_SIZE,legend_size=LEGEND_SIZE,path=FILE_PATH,filename=COR_HEATMAP_FIGURENAME):
     '''plot the correlation heatmap for all the numeric columns
     Args:
         data: Input numeric data to plot
@@ -448,9 +450,9 @@ def plot_num_correlation(data,is_save=False,figsize=FIGURE_SIZE,fontsize=FONT_SI
     if not figsize:
         figsize=(data.columns.shape[0]*1.25,data.columns.shape[0]*1.25)
     plt.figure(figsize=figsize*np.array([6.5,6.5]))
-    sns.heatmap(data.corr(), annot=True, vmax=1, square=True,cmap='Blues',annot_kws={'size':12.5,'weight':'bold', 'color':'black'},fmt=".2f")
+    sns.heatmap(data.corr(), annot=True, vmax=1, square=True,cmap='Blues',annot_kws={'size':annot_size,'weight':'bold', 'color':'black'},fmt=".2f")
     cax = plt.gcf().axes[-1]
-    cax.tick_params(labelsize=12.5)
+    cax.tick_params(labelsize=legend_size)
     plt.xticks(rotation=90,fontsize=fontsize*15)
     plt.yticks(rotation=0,fontsize=fontsize*15)
     plt.xlabel('numeric columns',fontsize=fontsize*20)
