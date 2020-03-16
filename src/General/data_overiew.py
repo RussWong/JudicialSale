@@ -477,5 +477,5 @@ def get_adaptive_size(num_bar:int,low_threshold=NARROW_BAR_NUM,high_threshold=MA
     elif num_bar<high_threshold:
         res= 1.25*(num_bar-low_threshold)+low_threshold
     else:
-        res 1.25*(high_threshold-low_threshold)+low_threshold
+        res= 1.25*(high_threshold-low_threshold)+low_threshold
     retuen res
