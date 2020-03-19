@@ -7,7 +7,7 @@
 * test_case：存放测试用例函数，例如test_demo.py
 * test_file/file_list.txt：需要测试的用例名称
 * tools：生成测试报告的函数
-
+* data：存放测试数据集
 ## 使用方法
 
 * 写好的测试用例文件（例如：test_demo.py）放在test_case文件夹中

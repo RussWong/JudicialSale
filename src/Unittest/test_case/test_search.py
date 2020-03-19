@@ -4,7 +4,9 @@ import sys
 sys.path.append("../../pap-2020/src/Price_System/Similar_Search/")
 from search_results import search_house
 #用户搜索
-input_datas=[{'Area':100},{'Region':'浦东','Road':'陆家嘴','Area':100,'Storey':4},{'Region':'浦东','Road':'陆家嘴','Storey':4},{'Region':'浦东','Road':'三林','Area':100,'Storey':4},{'Region':'浦东','Road':'陆家嘴','Storey':4}]
+f = open("../data/new_house_data_test.json", encoding='utf-8')       
+input_datas = json.load(f)
+# input_datas=[{'Area':100},{'Region':'浦东','Road':'陆家嘴','Area':100,'Storey':4},{'Region':'浦东','Road':'陆家嘴','Storey':4},{'Region':'浦东','Road':'三林','Area':100,'Storey':4},{'Region':'浦东','Road':'陆家嘴','Storey':4}]
 output_path='./output/'
 database='house'
 size=10
