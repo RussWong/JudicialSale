@@ -322,7 +322,7 @@ def get_unicount(data,is_plot=True,is_save=False,figsize=FIGURE_SIZE,fontsize=FO
         plt.show()
     if is_save:
         if not os.path.exists(path):
-            os.mkdir(path)
+            os.makedirs(path)
         plt.tight_layout()
         plt.savefig(path+filename+'.png')
         
@@ -366,7 +366,7 @@ def plot_num_dist(data,is_annot_null=False,is_save=False,figsize=FIGURE_SIZE,fon
     Num_all=data.columns.shape[0]
     if is_save:
         if not os.path.exists(path):
-            os.mkdir(path)
+            os.makedirs(path)
     for i in range(Num_all):
         plt.figure(i,figsize=tuple(figsize * np.array([6.5, 6.5])))
         sns.distplot(data.iloc[:,i].dropna(),hist=True,kde=False,norm_hist=False,rug=False,vertical=False,label='distplot')
@@ -403,7 +403,7 @@ def plot_cat_dist(data,is_annot_null=False,is_save=False,figsize=FIGURE_SIZE,fon
     Num_all=data.columns.shape[0]
     if is_save:
         if not os.path.exists(path):
-            os.mkdir(path)
+            os.makedirs(path)
     for i in range(Num_all):
         str_counts=data.iloc[:,i].value_counts()
         
@@ -458,7 +458,7 @@ def plot_num_correlation(data,is_save=False,figsize=FIGURE_SIZE,fontsize=FONT_SI
     plt.xlabel('numeric columns',fontsize=fontsize*20)
     plt.title('Numeric Data Correlation Statistics',fontsize=fontsize*20)
     if not os.path.exists(path):
-        os.mkdir(path)
+        os.makedirs(path)
     plt.tight_layout()
     plt.savefig(path+filename+'.png')
     plt.show()
