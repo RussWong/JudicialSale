@@ -8,9 +8,17 @@
 * test_file/file_list.txt：需要测试的用例名称
 * tools：生成测试报告的函数
 * data：存放测试数据集
+
 ## 使用方法
 
 * 写好的测试用例文件（例如：test_demo.py）放在test_case文件夹中
 * 在test_file/file_list.txt中写出需要测试用例文件名，例如test_demo，若需要批量运行测试用例，则换行写出所有测试用例文件名。
 * notebook cell中```%run main_run.py```    或者终端运行 ```python main_run.py```
 * 生成的测试报告以html格式存于report文件夹中
+
+## 框架作用
+
+* 支持批量执行测试用例，以及用例下的所有测试方法
+* 支持批量输入测试数据
+* 测试报告以html格式统一存放在report文件夹，方便阅读和回溯
+
