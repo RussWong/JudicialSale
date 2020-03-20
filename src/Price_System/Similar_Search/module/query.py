@@ -56,7 +56,7 @@ def query_house(input_data,size):
 		if input_data['Struction']:
 			doc={'match':{'Struction': ''}}
 			doc['match']['Struction']=input_data['Struction']
-			query['query']['function_score']['query']['bool']['must'].append(doc)
+			query['query']['function_score']['query']['bool']['should'].append(doc)
 
 	if 'Elevator' in input_data.keys():
 		if input_data['Elevator']:
