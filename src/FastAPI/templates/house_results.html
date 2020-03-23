@@ -44,7 +44,6 @@
                 <th>户型</th>
                 <th>建筑面积</th>
                 <th>建成年代</th>
-                <th>楼层</th>
                 <th>装修情况</th>
                 <th>建筑结构</th>
                 <th>有无电梯</th>
@@ -58,16 +57,15 @@
             <tr>
                 <td>{{result['Region']}}</td>  
                 <td>{{result['Road']}}</td>
-                <td>{{result['Community']}}</td>
+                <td>{{result['Community_Name']}}</td>
                 <td>{{result['Room']+result['Hall']}}</td>
-                <td>{{result['Area']}}</td>
+                <td>{{result['Construction_Area']}}</td>
                 <td>{{result['Age']}}</td>
-                <td>{{result['Floor']+'('+result['Height']+')'}}</td>
                 <td>{{result['Renovation']}}</td>
-                <td>{{result['Struction']}}</td>
+                <td>{{result['Construction_struct']}}</td>
                 <td>{{result['Elevator']}}</td>
-                <td>{{result['Authority']}}</td>
-                <td>{{result['Oriented']}}</td>
+                <td>{{result['Trading_Authority']}}</td>
+                <td>{{result['Final_Price']}}</td>
                 <td>{{result['Unit_Price']}}</td>
                 <td>{{result['score']}}</td>
             </tr>
