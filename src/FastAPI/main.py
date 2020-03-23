@@ -249,7 +249,7 @@ async def login_basic(auth: BasicAuth = Depends(basic_auth)):
         response.set_cookie(
             "Authorization",
             value=f"Bearer {token}",
-            domain="127.0.0.1",
+            domain="10.119.0.94",
             httponly=True,
             max_age=1800,
             expires=1800,
