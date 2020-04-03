@@ -68,6 +68,9 @@ def shap_compute(X,model,model_name):
         return index,shap_mean_df
     else:
         explainer=shap.KernelExplainer(model.predict,X)
+        #-----
+        X = shap.sample(X, 100)
+        #------
         shap_values=explainer.shap_values(X)
         # fig1=shap.force_plot(explainer.expected_value, shap_values[0,:], X.iloc[0,:])
         shap_mean=np.mean(abs(shap_values),axis=0)

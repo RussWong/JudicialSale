@@ -18,7 +18,7 @@ def query_house(input_data,size):
 
 	doc_area={
 				"gauss":{
-					"Area":{
+					"Construction_Area":{
 						"origin":"",
 						"scale":"",
 						"decay":""
@@ -26,9 +26,9 @@ def query_house(input_data,size):
 					}
 				}
 		}
-	doc_area["gauss"]['Area']['origin']=input_data['Area']
-	doc_area['gauss']['Area']['scale']=20 
-	doc_area['gauss']['Area']['decay']=0.9
+	doc_area["gauss"]['Construction_Area']['origin']=input_data['Construction_Area']
+	doc_area['gauss']['Construction_Area']['scale']=20 
+	doc_area['gauss']['Construction_Area']['decay']=0.9
 
 	query['query']['function_score']['functions'].append(doc_area)
 	if 'Region' in input_data.keys():
@@ -45,18 +45,18 @@ def query_house(input_data,size):
 			doc['match']['Road']['query']=input_data['Road']
 			query['query']['function_score']['query']['bool']['should'].append(doc)
 
-	if 'Community' in input_data.keys():
-		if input_data['Community']:
+	if 'Community_Name' in input_data.keys():
+		if input_data['Community_Name']:
 			doc={'match':{
-					'Community': {'query':'','boost':6}}}
-			doc['match']['Community']['query']=input_data['Community']
+					'Community_Name': {'query':'','boost':6}}}
+			doc['match']['Community_Name']['query']=input_data['Community_Name']
 			query['query']['function_score']['query']['bool']['should'].append(doc)
 
-	if 'Struction' in input_data.keys():
-		if input_data['Struction']:
-			doc={'match':{'Struction': ''}}
-			doc['match']['Struction']=input_data['Struction']
-			query['query']['function_score']['query']['bool']['must'].append(doc)
+	if 'Construction_struct' in input_data.keys():
+		if input_data['Construction_struct']:
+			doc={'match':{'Construction_struct': ''}}
+			doc['match']['Construction_struct']=input_data['Construction_struct']
+			query['query']['function_score']['query']['bool']['should'].append(doc)
 
 	if 'Elevator' in input_data.keys():
 		if input_data['Elevator']:
@@ -96,12 +96,12 @@ def query_house(input_data,size):
 			doc['match']['Hall']['query']=input_data['Hall']
 			query['query']['function_score']['query']['bool']['should'].append(doc)
 
-	if 'Oriented' in input_data.keys():
-		if input_data['Oriented']:
+	if 'Ladder_Ratio' in input_data.keys():
+		if input_data['Ladder_Ratio']:
 			doc={"match": {
-		            "Oriented": {"query": "","boost": 3}
+		            "Ladder_Ratio": {"query": "","boost": 3}
 		        }}
-			doc['match']['Oriented']['query']=input_data['Oriented']
+			doc['match']['Ladder_Ratio']['query']=input_data['Ladder_Ratio']
 			query['query']['function_score']['query']['bool']['should'].append(doc)
 
 	if 'Age' in input_data.keys():
@@ -112,12 +112,12 @@ def query_house(input_data,size):
 			doc['match']['Age']['query']=input_data['Age']
 			query['query']['function_score']['query']['bool']['should'].append(doc)
 
-	if 'Authority' in input_data.keys():
-		if input_data['Authority']:
+	if 'Trading_Authority' in input_data.keys():
+		if input_data['Trading_Authority']:
 			doc={"match": {
-		            "Authority": {"query": "","boost": 1}
+		            "Trading_Authority": {"query": "","boost": 1}
 		        }}
-			doc['match']['Authority']['query']=input_data['Authority']
+			doc['match']['Trading_Authority']['query']=input_data['Trading_Authority']
 			query['query']['function_score']['query']['bool']['should'].append(doc)
 
 	return query

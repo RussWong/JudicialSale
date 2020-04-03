@@ -1,11 +1,16 @@
 
 
 '''
-    Date: 2020/1/14
+    Date: 2020/3/7
     Func_list:
+    Version：    2.1.2
     Info：
-        在上一版本基础上修改了duplicate
-
+        V_2.1.1：（完成测试）
+                修改编码部分代码，注释onehot编码，修改target编码，添加预测功能。
+        V_2.1.2: （完成测试）
+                修改标准化部分代码，返回数据使之能保存
+                数据标准化移到编码之后，所以处理都为数值型，故不需要col，但需target
+                保存标准化模型
 
 '''
 
@@ -22,16 +27,17 @@ import json
 # 分类与数值的编码
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.preprocessing import RobustScaler
+import joblib
 
 from sklearn.ensemble import IsolationForest
 import matplotlib.pyplot as plt
 
 def data_duplicate(data):
-    print('数据去重开始')
+    print('==== 数据去重开始 ====')
     data.drop_duplicates(keep='first', inplace=True)
     data.reset_index(drop=True,inplace=True)
     print('去重后数据规格：'+str(data.shape))
-    print('数据去重结束')
+    print('==== 数据去重结束 ====')
 
 
 def data_latlng(data,ways,cols,path=''):
@@ -44,7 +50,7 @@ def data_latlng(data,ways,cols,path=''):
 
             
     '''
-    print('经纬度转换开始')
+    print('==== 经纬度转换开始 ====')
     start = time.time()
     # 经纬度转换
     for i in range(data.shape[0]):
@@ -71,7 +77,7 @@ def data_latlng(data,ways,cols,path=''):
     end = time.time()
     print('转换后数据规格：'+str(data.shape))
     print('耗时：%.4f' %(end-start))
-    print('经纬度转换结束')
+    print('==== 经纬度转换结束 ====')
     return data
 
 
@@ -108,17 +114,47 @@ def Latlng(location,i):
 
 
 
-def data_normalization(data,cols):
+def data_standardization(raw_data, target, path, mode='train', method='Robust'): 
     """
     param:
-        data:   type=DataFrame, all data
-        cols:   type=List, columns to be scaled
+        data: type=DataFrame, all data
+        target: type=string, label of target
+        path: type=string, model path
+        method：type=string, method to scale data
     function:
-        数值变量标准化
+        Standardize data
+    Note:
+        Need to distinguish standardization, normalization, Gaussian Mapping.
+        Leave room for future improvement.
 
     """
-    data[cols] = pd.DataFrame(RobustScaler().fit_transform(data[cols]),columns=cols)
+    print('==== 数据标准化开始 ====')
+    data = raw_data.copy()
+    columns = list(data.columns)
 
+    if target in columns:
+        columns.remove(target)
+    else:
+        print('错误：没有此目标标签')
+
+    if mode == 'train':
+        if method == 'Robust':
+            scaler = RobustScaler()
+        scaler.fit(data[columns])
+        # store
+        joblib.dump(scaler, path)
+    elif mode =='predict':
+        if os.path.exists(path):
+            scaler = joblib.load(path)
+        else:
+            print('错误：未存在模型')
+
+
+    data[columns] = pd.DataFrame(scaler.transform(data[columns]),columns=columns)
+    
+    print('==== 数据标准化结束 ====')
+
+    return data
 
 
 def data_anomaly(data_all,cols,ylabel,path):
@@ -187,52 +223,86 @@ def plt_anomaly(data,ylabel,path,name='IsolationForest'):
     plt.show()
 
 
-def data_encoding(data,cols):
-    """
-      param:
-      function:
-    """
+# def data_encoding(data,cols):
+#     """
+#       param:
+#       function:
+#     """
 
-    print('数据编码开始')
-    start=time.time()
+#     print('数据编码开始')
+#     start=time.time()
 
-    if 'str' in cols:
-        onehot = OneHotEncoder()
-        #tmp_matrix = onehot.fit_transform(data[cols['str']]).toarray()
-        onehot.fit(data[cols['str']])
-        tmp_matrix=onehot.transform(data[cols['str']]).toarray()
-        data_category = pd.DataFrame(tmp_matrix,columns=onehot.get_feature_names())
-        data.drop(cols['str'], axis=1, inplace=True)
-        data = pd.concat([data,data_category], axis=1)
-        print('编码后数据规格：'+str(data.shape))
+#     if 'str' in cols:
+#         onehot = OneHotEncoder()
+#         #tmp_matrix = onehot.fit_transform(data[cols['str']]).toarray()
+#         onehot.fit(data[cols['str']])
+#         tmp_matrix=onehot.transform(data[cols['str']]).toarray()
+#         data_category = pd.DataFrame(tmp_matrix,columns=onehot.get_feature_names())
+#         data.drop(cols['str'], axis=1, inplace=True)
+#         data = pd.concat([data,data_category], axis=1)
+#         print('编码后数据规格：'+str(data.shape))
 
-    end=time.time()
-    print('耗时：%.4f' %(end-start))
-    print('数据编码结束')
-    return data
-    
-def data_encoding_2(data,cols,target,m=300):
+#     end=time.time()
+#     print('耗时：%.4f' %(end-start))
+#     print('数据编码结束')
+#     return data
+
+
+def data_encoding_predict(raw_data, cols, encoder):
     '''
         param:
-            m: is the weight of overall mean
+            data: dataframe
+            cols: list, column name of categorical data
+            encoder: dataframe, to encode data
         Info:
-            Version 2, target encoding rather than onehot
+            Target encoding for categorical data when predict
+        Note:
+            If data value is not in encoder, it will return Null 
+
+    '''
+    data = raw_data.copy()
+
+    if cols is not None:
+        for i in cols:
+            data[i] = data[i].map(encoder['Value'])
+
+    return data
+
+
+
+    
+def data_encoding_train(raw_data, cols, target, m=300):
+    '''
+        param:
+            data: dataframe
+            cols: list, column name of categorical data
+            target: str, label of target
+            m: int, the weight of overall mean
+        Info:
+            Target encoding for categorical data when train the model
             url: http://kodgv.xyz/2019/04/08/%E7%AB%9E%E8%B5%9B%E7%BB%8F%E9%AA%8C/targetencoding/
 
     '''
 
-    print('数据编码开始')
-    start=time.time()
+    print('==== 数据编码开始 ====')
+    start = time.time()
 
-    if 'str' in cols:
-        for i in cols['str']:
-            data.loc[:,i] = target_encoding(data,i,target,m)
-        print('编码后数据规格：'+str(data.shape))
+    data = raw_data.copy()
+    encoder = pd.DataFrame()
 
-    end=time.time()
-    print('耗时：%.4f' %(end-start))
-    print('数据编码结束')
-    return data
+    if cols is not None:
+        for i in cols:
+            data.loc[:,i], encoder_tmp = target_encoding(data, i, target, m)
+            encoder = pd.concat([encoder, encoder_tmp])
+
+        encoder.columns = ['Value']
+        print('编码后数据规格：' + str(data.shape))
+        print('编码表数据规格：' + str(encoder.shape))
+
+    end = time.time()
+    print('耗时：%.4f' %(end - start))
+    print('==== 数据编码结束 ====')
+    return data, encoder
 
 
 def target_encoding(data, group, target, m):
@@ -248,10 +318,41 @@ def target_encoding(data, group, target, m):
     smooth = (counts * means + m * mean) / (counts + m)
 
     # Replace each value by the according smoothed mean
-    return data[group].map(smooth)
+    return data[group].map(smooth), smooth
 
 
+def predict_standardization(data, mode, target, path_model, path_stand_feature, path_select_feature=None):
+    if mode == 'train':
+        data_trans = data_standardization(data, target, path_model, 'train')
 
+        fw = open(path_stand_feature, 'w', encoding='UTF-8')
+        for i in list(data_trans.columns):
+            fw.write(i + '\n')
+        fw.close()
+
+    elif mode == 'predict':
+        column_stand = []
+        fr = open(path_stand_feature, 'r', encoding='UTF-8')
+        for line in fr:
+            line = line.strip()
+            column_stand.append(line)
+        fr.close()
+
+        column_predict = []
+        fr = open(path_select_feature, 'r', encoding='UTF-8')
+        dic = json.load(fr)
+        fr.close()
+        for key in dic.keys():
+            for fe in dic[key]:
+                column_predict.append(fe)
+
+        column_add = list(set(list(column_stand)).difference(set(column_predict)))
+
+        data_stand = pd.concat([data_predict, pd.DataFrame(columns=column_add)], axis=1)
+        data_trans = data_standardization(data_stand[column_stand], target, path_model, 'predict')
+        data_trans.drop(column_add, axis=1, inplace=True)
+
+    return data_trans
 
 
 

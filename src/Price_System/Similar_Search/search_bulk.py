@@ -20,7 +20,7 @@ def bulk_house(house_data_path,database):
 	print:
 		成功插入的数据的ID
 	"""
-	house_data = pd.read_csv('house_data_path')
+	house_data = pd.read_csv(house_data_path)
 	create_index_body = {
 		  "settings": {
 		    "index":{
@@ -50,7 +50,7 @@ def bulk_house(house_data_path,database):
 		          "analyzer":"whitespace",
 			        "similarity":"my_similarity"
 			    },
-		        "Community":{
+		        "Community_Name":{
 		          "type":"text",
 		          "analyzer":"whitespace"
 			 
@@ -66,27 +66,18 @@ def bulk_house(house_data_path,database):
 			    "Unit_Price":{
 			      "type":"float"
 			    },
-		        "Floor":{
-		          "type":"keyword"
-		        },
-		        "Oriented":{
-		          "type":"keyword"
-		        },
-		        "Struction":{
+		        "Construction_struct":{
 		          "type":"text",
 		          "analyzer":"whitespace"
 		        },
-		        "Authority":{
+		        "Trading_Authority":{
 		          "type":"text",
 		          "analyzer":"whitespace"
 		        },
 		        "Elevator":{
 		          "type":"keyword"
 		        },
-			    "Height":{
-		          "type":"keyword"
-		        },
-		        "Area":{
+		        "Construction_Area":{
 		          "type":"float"
 		        },
 		        "Age":{
@@ -98,8 +89,18 @@ def bulk_house(house_data_path,database):
 		        },
 		        "Final_Price":{
 		          "type":"float"
+		        },
+ 		        "Listing_Time":{
+		          "type":"text"
+		        },
+		        "Transaction_Time":{
+		          "type":"text"
+		        },                  
+		        "Ladder_Ratio":{
+		          "type":"text",
+                  "analyzer":"whitespace"
 		        }
-		      }
+              }
 		    }
 		  }
 		}

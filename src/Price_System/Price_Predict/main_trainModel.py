@@ -16,9 +16,13 @@ from predict_analysis import predict_analysis
 # 手工处理
 input_path = '../../../Data/Price_System/Price_Predict/raw/house/used_house_data.csv'
 output_path = '../../../Data/Price_System/Price_Predict/preprocess/house/used_house_data_preprocess.csv'
+cols_path='../../../output/Price_System/Price_Predict/results/cols.json'
 data_preprocess, cols = predict_preprocess(input_path=input_path,
                                            output_path=output_path,
+                                           cols_path=cols_path,
                                            is_need=1)
+
+print('preprocess finish')
 
 # 数据清洗
 mpl.rcParams['font.sans-serif'] = ['SimHei']
@@ -28,16 +32,24 @@ docs_path = '../../../docs/Price_System/Price_Predict/used_house_data/'
 data_qualified = predict_qualified(input_path=input_path,
                                    output_path=output_path,
                                    docs_path=docs_path,
-                                   name_of_target='Final_Price', cols=cols)
+                                   name_of_target='Final_Price',
+                                   cols=cols)
+print('qualified finish')
 
 # 编码
 input_path='../../../Data/Price_System/Price_Predict/qualified/house/used_house_data_qualified.csv'
 output_path='../../../Data/Price_System/Price_Predict/encoding/house/used_house_data_encoding.csv'
+encoder_path='../../../output/Price_System/Price_Predict/results/encoder.csv'
+stand_path='../../../output/Price_System/Price_Predict/model/stand.pkl'
+path_stand_feature='../../../output/Price_System/Price_Predict/results/featureOrder.txt'
 data_encoding = predict_encoding(input_path=input_path,
                                  output_path=output_path,
+                                 encoder_path=encoder_path,
+                                 stand_path=stand_path,
                                  cols=cols,
-                                 name_of_target='Final_Price',
-                                 type_of_encoding='target')
+                                 path_stand_feature=path_stand_feature,
+                                 name_of_target='Final_Price')
+print('encoding finish')
 
 # 特征选择
 input_path='../../../Data/Price_System/Price_Predict/encoding/house/used_house_data_encoding.csv'
@@ -46,8 +58,9 @@ feature_path='../../../output/Price_System/Price_Predict/results/feature.txt'
 data_feature = predict_feature(input_path=input_path,
                                feature_path=feature_path,
                                output_path=output_path,
+                               cols=cols,
                                num_of_feature=15, name_of_target='Final_Price')
-
+print('feature finish')
 
 
 # 模型训练bagging
@@ -114,12 +127,7 @@ print('model train finish')
 
 
 
-# # 模型预测bagging
-# model_path = '../../../output/Price_System/Price_Predict/model/price_predict_bagging.pkl'
-# data_path = '../../../Data/Price_System/Price_Predict/feature/house/used_house_data_feature.csv'
-# result = predict_prediction(model_path=model_path,
-#                             data_path=data_path,
-#                             name_of_target='Final_Price')
+
 
 # # 模型分析bagging
 # name_of_model = 'bagging'
@@ -131,13 +139,6 @@ print('model train finish')
 #                  data_path=data_path,
 #                  output_path=output_path)
 
-
-# # 模型预测xgboost
-# model_path = '../../../output/Price_System/Price_Predict/model/price_predict_xgboost.pkl'
-# data_path = '../../../Data/Price_System/Price_Predict/feature/house/used_house_data_feature.csv'
-# result = predict_prediction(model_path=model_path,
-#                             data_path=data_path,
-#                             name_of_target='Final_Price')
 
 # # 模型分析xgboost
 # name_of_model = 'xgboost'

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="{{ url_for('static', path='/home.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', path='/result.css') }}" rel="stylesheet">
+    <title>结果页</title>
+</head>
+<body>
+<div class="top1">
+    <div class="nav">
+    <ul>
+        <li><a href="{{ url_for('home_page') }}"><span>首页</span></a></li>
+        <li><a href="#"><span>使用说明</span></a></li>
+        <li><a href="{{ url_for("price_system") }}"><span>成交价格分析功能</span></a></li>
+        <li><a href="#"><span>拍卖流程规范功能</span></a></li>
+        <li><a href="#"><span>个人中心</span></a></li>
+    </ul>
+    </div>
+</div>
+<br>
+<div align='center'>
+        <div>
+            <h2  align='center' style="color: darkblue">结果</h2>
+            <table>
+                <tr>
+                    <th class='head' style='width: 100px'>参考价格: </th>
+                    <th style='width: 100px'>{{ price }}</th>
+                    <th>万元</th>
+                </tr>
+            </table>
+        </div>
+        <img src="{{ url_for('static',path='/xgboost_shap.png') }}">
+        <p class='head' style= 'margin-bottom: 5px;' >类似房屋参考：</p>
+        <table>
+            <tr>
+                <!-- <th>序号</th> -->
+                <th>市辖区</th>
+                <th>路段</th>
+                <th>小区</th>
+                <th>户型</th>
+                <th>建筑面积</th>
+                <th>建成年代</th>
+                <th>装修情况</th>
+                <th>建筑结构</th>
+                <th>有无电梯</th>
+                <th>房屋权属</th>
+                <th>朝向</th>
+                <th>房屋单价(元)</th>
+                <th>相似程度</th>
+            </tr>
+        {% for result in similar_house %}
+        
+            <tr>
+                <td>{{result['Region']}}</td>  
+                <td>{{result['Road']}}</td>
+                <td>{{result['Community_Name']}}</td>
+                <td>{{result['Room']+result['Hall']}}</td>
+                <td>{{result['Construction_Area']}}</td>
+                <td>{{result['Age']}}</td>
+                <td>{{result['Renovation']}}</td>
+                <td>{{result['Construction_struct']}}</td>
+                <td>{{result['Elevator']}}</td>
+                <td>{{result['Trading_Authority']}}</td>
+                <td>{{result['Final_Price']}}</td>
+                <td>{{result['Unit_Price']}}</td>
+                <td>{{result['score']}}</td>
+            </tr>
+        
+        {% endfor %}
+        </table>
+</div>
+<!-- <img src="{{ url_for('static',path='/xgboost_shap.png') }}">
+ -->
+<div align="center">
+<a href="{{ url_for('price_system') }}">
+<button>返回</button>
+</a>
+</div>
+</body>
+</html>
