@@ -52,6 +52,7 @@ def query_house(input_data,size):
 			doc['match']['Community_Name']['query']=input_data['Community_Name']
 			query['query']['function_score']['query']['bool']['should'].append(doc)
 
+
 	if 'Construction_struct' in input_data.keys():
 		if input_data['Construction_struct']:
 			doc={'match':{'Construction_struct': ''}}

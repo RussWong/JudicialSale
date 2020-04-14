@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>逾期预测</title>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="{{ url_for('static', path='/home.css') }}" rel="stylesheet">
+</head>
+<body>
+<div class="top1">
+    <div class="nav">
+    <ul>
+        <li><a href="{{ url_for('home_page') }}"><span>首页</span></a></li>
+        <li><a href="#"><span>使用说明</span></a></li>
+        <li><a href="{{ url_for("price_system") }}"><span>成交价格分析功能</span></a></li>
+        <li><a href="#"><span>拍卖流程规范功能</span></a></li>
+        <li><a href="#"><span>个人中心</span></a></li>
+    </ul>
+	</div>
+</div>
+<form method="POST" enctype="multipart/form-data" action="/auction_management/overdue_estimate/previous_period">
+    <table>
+        <legend align='left'>请输入拍卖工作前期是否有以下记录:</legend>
+        <tr>
+            <td class='col1'>委托辅助机构函：</td>
+            <td><input type="radio" name="Agency_Letter" value="1">有<input type="radio" name="Agency_Letter" value="0">无</td>
+        </tr>
+        <tr>
+            <td class='col1'>行裁定书（图片或pdf）：</td>
+            <td><input type="radio" name="Ruling_Letter" value="1">有<input type="radio" name="Ruling_Letter" value="0">无</td>
+        </tr>
+        <tr>
+            <td class='col1'>评估价（选择评估价时）：</td>
+            <td><input type="radio" name="Evaluation_Price" value="1">有<input type="radio" name="Evaluation_Price" value="0">无</td>
+        </tr>
+        <tr>
+            <td class='col1'>评估报告（图片或pdf）：</td>
+            <td><input type="radio" name="Evaluation_Report" value="1">有<input type="radio" name="Evaluation_Report" value="0">无</td>
+        </tr>        
+        <tr>
+            <td class='col1'>评估基准日：</td>
+            <td><input type="radio" name="Evaluation_Basedate" value="1">有<input type="radio" name="Evaluation_Basedate" value="0">无</td>
+        </tr>
+        <tr>
+            <td class='col1'>评估有效期：</td>
+            <td><input type="radio" name="Evaluation_Validity" value="1">有<input type="radio" name="Evaluation_Validity" value="0">无</td>
+        </tr>        
+        <tr>
+            <td class='col1'>财产权证（图片或pdf）：</td>
+            <td><input type="radio" name="Property_Rights" value="1">有<input type="radio" name="Property_Rights" value="0">无</td>
+        </tr>
+        <tr>
+            <td class='col1'>抵押状况：</td>
+            <td><input type="radio" name="Mortgage_Status" value="1">有<input type="radio" name="Mortgage_Status" value="0">无</td>
+        </tr>
+        <tr>
+            <td class='col1'>标的物照片：</td>
+            <td><input type="radio" name="Photo" value="1">有<input type="radio" name="Photo" value="0">无</td>
+        </tr>
+        <tr>
+            <td class='col1'>标的物视频：</td>
+            <td><input type="radio" name="Video" value="1">有<input type="radio" name="Video" value="0">无</td>
+        </tr>
+        <tr>
+            <td class='col1'>公告素材（初稿）：</td>
+            <td><input type="radio" name="Announcement_Material" value="1">有<input type="radio" name="Announcement_Material" value="0">无</td>
+        </tr>
+        <tr>
+            <td class='col1'>须知素材（初稿）：</td>
+            <td><input type="radio" name="Notice" value="1">有<input type="radio" name="Notice" value="0">无</td>
+        </tr>               
+        <tr>
+            <td class='col1'>标的情况表：</td>
+            <td><input type="radio" name="Fact_Sheet" value="1">有<input type="radio" name="Fact_Sheet" value="0">无</td>
+        </tr>
+    </table> 
+    <div><button type="submit" >信息提交</button></div>
+</form>
+<div align="left">
+<a href="{{ url_for('auction_management') }}"><button>返回</button></a>
+</div>
+<br>
+<form method="POST" enctype="multipart/form-data" action="/auction_management/overdue_estimate/mid_period">
+    <table>
+        <legend align='left'>请输入拍卖工作中期是否有以下记录:</legend>
+        <tr>
+            <td class='col1'>公告张贴图片：</td>
+            <td><input type="radio" name="Post_Photo" value="1">有<input type="radio" name="Post_Photo" value="0">无</td>
+        </tr>
+        <tr>
+            <td class='col1'>拍卖告知凭证/其他通知方式：</td>
+            <td><input type="radio" name="Auction_Notice" value="1">有<input type="radio" name="Auction_Notice" value="0">无</td>
+        </tr>
+        <tr>
+            <td class='col1'>安排看样：</td>
+            <td><input type="radio" name="Arrange_See" value="1">有<input type="radio" name="Arrange_See" value="0">无</td>
+        </tr>
+        <tr>
+            <td class='col1'>起拍价：</td>
+            <td><input type="radio" name="Start_Price" value="1">有<input type="radio" name="Start_Price" value="0">无</td>
+        </tr>        
+        <tr>
+            <td class='col1'>前期是否有逾期：</td>
+            <td><input type="radio" name="Previous_Overdue" value="1">有<input type="radio" name="Previous_Overdue" value="0">无</td>
+        </tr>
+    </table> 
+    <div><button type="submit" >信息提交</button></div>
+</form>
+<div align="left">
+<a href="{{ url_for('auction_management') }}"><button>返回</button></a>
+</div>
+<br>
+<form method="POST" enctype="multipart/form-data" action="/auction_management/overdue_estimate/late_period">
+    <table>
+        <legend align='left'>请输入拍卖工作后期是否有以下记录:</legend>
+        <tr>
+            <td class='col1'>成交价：</td>
+            <td><input type="radio" name="Final_Price" value="1">有<input type="radio" name="Final_Price" value="0">无</td>
+        </tr>
+        <tr>
+            <td class='col1'>买受人：</td>
+            <td><input type="radio" name="Buyer" value="1">有<input type="radio" name="Buyer" value="0">无</td>
+        </tr>
+        <tr>
+            <td class='col1'>买受人手机号：</td>
+            <td><input type="radio" name="Buyer_Number" value="1">有<input type="radio" name="Buyer_Number" value="0">无</td>
+        </tr>
+        <tr>
+            <td class='col1'>竞价成功确认书截图：</td>
+            <td><input type="radio" name="Confirmation" value="1">有<input type="radio" name="Confirmation" value="0">无</td>
+        </tr>        
+        <tr>
+            <td class='col1'>余款支付截止日：</td>
+            <td><input type="radio" name="Payment_Deadline" value="1">有<input type="radio" name="Payment_Deadline" value="0">无</td>
+        </tr>
+        <tr>
+            <td class='col1'>成交余款支付凭证：</td>
+            <td><input type="radio" name="Payment_Confirm" value="1">有<input type="radio" name="Payment_Confirm" value="0">无</td>
+        </tr>        
+        <tr>
+            <td class='col1'>成交确认书：</td>
+            <td><input type="radio" name="Deal_Confirmation" value="1">有<input type="radio" name="Deal_Confirmation" value="0">无</td>
+        </tr>
+        <tr>
+            <td class='col1'>交易凭证：</td>
+            <td><input type="radio" name="Transaction_Voucher" value="1">有<input type="radio" name="Transaction_Voucher" value="0">无</td>
+        </tr>
+        <tr>
+            <td class='col1'>结案报告：</td>
+            <td><input type="radio" name="Case_Report" value="1">有<input type="radio" name="Case_Report" value="0">无</td>
+        </tr>
+        <tr>
+            <td class='col1'>前期是否有逾期：</td>
+            <td><input type="radio" name="Previous_Overdue" value="1">有<input type="radio" name="Previous_Overdue" value="0">无</td>
+        </tr>
+        <tr>
+            <td class='col1'>中期是否有逾期：</td>
+            <td><input type="radio" name="Mid_Overdue" value="1">有<input type="radio" name="Mid_Overdue" value="0">无</td>
+        </tr>
+    </table> 
+    <div><button type="submit" >信息提交</button></div>
+</form>
+<div align="left">
+<a href="{{ url_for('auction_management') }}"><button>返回</button></a>
+</div>
+<br>
+<div align="left">
+<h3>预测多个案件前期是否会逾期：</h3>
+支持上传csv格式的文件
+<br>
+<form action="/auction_management/previous_period/file_results/" enctype="multipart/form-data" method="post">
+<input name="file" type="file">
+<br>
+<input type="submit" id="btn">
+</form>
+</div>
+</body>
+</html>
