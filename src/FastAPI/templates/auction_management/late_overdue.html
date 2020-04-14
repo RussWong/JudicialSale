@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>后期逾期预测结果页</title>
+</head>
+<body>
+<p>{{result}}</p>
+<img src="{{ url_for('static',path='/shap_hou.png') }}">
+<div align="left">
+<a href="{{ url_for('overdue_estimate') }}"><button>返回</button></a>
+</div>
+</body>
+</html>

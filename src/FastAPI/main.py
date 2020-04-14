@@ -21,7 +21,8 @@ from fastapi.openapi.models import OAuthFlows as OAuthFlowsModel
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from starlette.status import HTTP_403_FORBIDDEN
+
+from starlette.status import HTTP_403_FORBIDDEN, HTTP_401_UNAUTHORIZED
 from starlette.responses import RedirectResponse, Response, JSONResponse
 from starlette.requests import Request
    
@@ -43,10 +44,17 @@ sys.path.append('../Price_System/Price_Predict/')
 from main_predict import price_predict
 sys.path.append('../Price_System/Similar_Search/')
 from search_results import search_house
+sys.path.append('../Auction_Management/Overdue_Estimate/')
+from overdue_classify import classify_qian
+sys.path.append('../Auction_Management/Overdue_Estimate/')
+from overdue_classify import classify_zhong
+sys.path.append('../Auction_Management/Overdue_Estimate/')
+from overdue_classify import classify_hou
 
-SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
+SECRET_KEY = "236f8aefd210910ec66c38ef9199cd8d804100d6f03ec0d87c5055e9fb012871"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
+DOMAIN = "10.119.0.94"
 
 fake_users_db = {
     "johndoe": {
@@ -215,14 +223,14 @@ async def get_current_active_user(current_user: User = Depends(get_current_user)
 
 
 @app.get("/")
-async def homepage():
+async def homepage(request: Request):
     #改成请登录
-    return "Welcome to the security test!"
+    return templates.TemplateResponse("login.html", {"request": request})
 
 @app.get("/logout")
 async def route_logout_and_remove_cookie():
     response = RedirectResponse(url="/")
-    response.delete_cookie("Authorization", domain="localtest.me")
+    response.delete_cookie("Authorization", domain = DOMAIN)
     return response
 
 @app.get("/login_basic")
@@ -249,7 +257,7 @@ async def login_basic(auth: BasicAuth = Depends(basic_auth)):
         response.set_cookie(
             "Authorization",
             value=f"Bearer {token}",
-            domain="10.119.0.94",
+            domain= DOMAIN,
             httponly=True,
             max_age=1800,
             expires=1800,
@@ -285,7 +293,6 @@ async def create_upload_files(
     #test.csv就是用户上传的文件，存在当前目录下
     input_data = pd.read_csv('test.csv',encoding='unicode_escape',error_bad_lines=False)
     #价格预测模块
-    
     output_path = '../../output/Price_System/Price_Predict/results/'
     encoder_path='../../output/Price_System/Price_Predict/results/encoder.csv'
     standModel_path='../../output/Price_System/Price_Predict/model/stand.pkl'
@@ -325,7 +332,7 @@ async def price_system(request: Request,
                       Num_Look : int = Form(...),
                       Attention : int = Form(...),
                       Household: int = Form(...)
-                      ):#请求参数
+                      ):
 
     input_search={
           'Region': Region,
@@ -392,7 +399,169 @@ async def price_system(request: Request,
 
     return templates.TemplateResponse("house_results.html", {"request": request, "similar_house": similar_house, "price": price})
 
+@app.get("/auction_management")
+async def auction_management(request: Request, current_user: User = Depends(get_current_active_user)):
+    return templates.TemplateResponse("./auction_management/auction_management.html", {"request": request})
 
+
+@app.get("/auction_management/overdue_estimate")
+async def overdue_estimate(request: Request, current_user: User = Depends(get_current_active_user)):
+    return templates.TemplateResponse("./auction_management/overdue.html", {"request": request})
+
+
+@app.get("/auction_management/overdue_estimate/pre_overdue")
+async def overdue_pre(request: Request, current_user: User = Depends(get_current_active_user)):
+    return templates.TemplateResponse("./auction_management/pre_form.html", {"request": request})
+
+
+@app.get("/auction_management/overdue_estimate/mid_overdue")
+async def overdue_mid(request: Request, current_user: User = Depends(get_current_active_user)):
+    return templates.TemplateResponse("./auction_management/mid_form.html", {"request": request})
+
+
+@app.get("/auction_management/overdue_estimate/late_overdue")
+async def overdue_late(request: Request, current_user: User = Depends(get_current_active_user)):
+    return templates.TemplateResponse("./auction_management/late_form.html", {"request": request})
+
+
+@app.post("/auction_management/overdue_estimate/previous_period")
+async def pre_overdue_estimate(request: Request,
+                          Agency_Letter: int = Form(...),
+                          Ruling_Letter: int = Form(...),
+                          Evaluation_Price: int = Form(...),
+                          Evaluation_Report: int = Form(...),
+                          Evaluation_Basedate: int = Form(...),
+                          Evaluation_Validity: int = Form(...),
+                          Property_Rights: int = Form(...),
+                          Mortgage_Status: int = Form(...),
+                          Photo: int = Form(...),
+                          Video: int = Form(...),
+                          Announcement_Material: int = Form(...),
+                          Notice: int = Form(...),
+                          Fact_Sheet: int = Form(...)
+                          ):
+    input_data={
+            "委托辅助机构函":Agency_Letter,
+            "行裁定书（图片或pdf）":Ruling_Letter,
+            "评估价（选择评估价时）":Evaluation_Price,
+            "评估报告（图片或pdf）":Evaluation_Report,
+            "评估基准日":Evaluation_Basedate,
+            "评估有效期":Evaluation_Validity,
+            "财产权证（图片或pdf）":Property_Rights,
+            "抵押状况":Mortgage_Status,
+            "标的物照片":Photo,
+            "标的物视频":Video,
+            "公告素材（初稿）":Announcement_Material,
+            "须知素材（初稿）":Notice,
+            "标的情况表":Fact_Sheet
+    }
+    input_data=pd.DataFrame(input_data,index=[0])
+    model_path='../../output/Auction_Management/Overdue_Estimate/model/'
+    res=classify_qian(input_data,model_path)
+    print(res)
+    table={"1":"预计拍卖前期工作会逾期。","0":"预计拍卖前期工作不会逾期。"}
+    return templates.TemplateResponse("./auction_management/pre_overdue.html", {"request": request,"result":table[str(res[0])]})
+
+@app.post("/auction_management/overdue_estimate/mid_period")
+async def mid_overdue_estimate(request: Request,
+                          Post_Photo: int = Form(...),
+                          Auction_Notice: int = Form(...),
+                          Arrange_See: int = Form(...),
+                          Start_Price: int = Form(...),
+                          Previous_Overdue: int = Form(...)
+                          ):
+    input_data={
+            "公告张贴图片":Post_Photo,
+            "拍卖告知凭证/其他通知方式":Auction_Notice,
+            "安排看样":Arrange_See,
+            "起拍价":Start_Price,
+            "前期是否逾期":Previous_Overdue
+    }
+    input_data=pd.DataFrame(input_data,index=[0])
+    model_path='../../output/Auction_Management/Overdue_Estimate/model/'
+    res=classify_zhong(input_data,model_path)
+    table={"1":"预计拍卖中期工作会逾期。","0":"预计拍卖中期工作不会逾期。"}
+    return templates.TemplateResponse("./auction_management/mid_overdue.html", {"request": request,"result":table[str(res[0])]})
+
+@app.post("/auction_management/overdue_estimate/late_period")
+async def late_overdue_estimate(request: Request,
+                          Final_Price: int = Form(...),
+                          Buyer: int = Form(...),
+                          Buyer_Number: int = Form(...),
+                          Confirmation: int = Form(...),
+                          Payment_Deadline: int = Form(...),
+                          Payment_Confirm: int = Form(...),
+                          Deal_Confirmation: int = Form(...),
+                          Transaction_Voucher: int = Form(...),
+                          Case_Report: int = Form(...),
+                          Previous_Overdue : int = Form(...),
+                          Mid_Overdue : int = Form(...)
+                          ):
+    input_data={
+            "成交价":Final_Price,
+            "买受人":Buyer,
+            "买受人手机号":Buyer_Number,
+            "竞价成功确认书截图":Confirmation,
+            "余款支付截止日":Payment_Deadline,
+            "成交余款支付凭证":Payment_Confirm,
+            "成交确认书":Deal_Confirmation,
+            "交易凭证":Transaction_Voucher,
+            "结案报告":Case_Report,
+            "前期是否逾期":Previous_Overdue,
+            "中期是否逾期":Mid_Overdue
+    }
+    input_data=pd.DataFrame(input_data,index=[0])
+    model_path='../../output/Auction_Management/Overdue_Estimate/model/'
+    res=classify_hou(input_data,model_path)
+    table={"1":"预计拍卖后期工作会逾期。","0":"预计拍卖后期工作不会逾期。"}
+    return templates.TemplateResponse("./auction_management/late_overdue.html", {"request": request,"result":table[str(res[0])]})
+
+@app.post("/auction_management/previous_period/file_results/")
+async def create_upload_files(
+    file: UploadFile = File(...)
+):
+    contents = await file.read()
+    with open('pre.csv','wb') as f:
+      f.write(contents)
+    input_data = pd.read_csv('pre.csv',encoding='unicode_escape',error_bad_lines=False)
+    model_path='../../output/Auction_Management/Overdue_Estimate/model/'
+
+    res_list=classify_qian(input_data,model_path)
+    print(res_list)
+    res = json.dumps(res_list,cls=NpEncoder)
+
+    return {'results': res}
+@app.post("/auction_management/mid_period/file_results/")
+async def create_upload_files(
+    file: UploadFile = File(...)
+):
+    contents = await file.read()
+    with open('mid.csv','wb') as f:
+      f.write(contents)
+    input_data = pd.read_csv('mid.csv',encoding='unicode_escape',error_bad_lines=False)
+    model_path='../../output/Auction_Management/Overdue_Estimate/model/'
+
+    res_list=classify_zhong(input_data,model_path)
+    print(res_list)
+    res = json.dumps(res_list,cls=NpEncoder)
+
+    return {'results': res}
+
+@app.post("/auction_management/late_period/file_results/")
+async def create_upload_files(
+    file: UploadFile = File(...)
+):
+    contents = await file.read()
+    with open('late.csv','wb') as f:
+      f.write(contents)
+    input_data = pd.read_csv('late.csv',encoding='unicode_escape',error_bad_lines=False)
+    model_path='../../output/Auction_Management/Overdue_Estimate/model/'
+
+    res_list=classify_hou(input_data,model_path)
+    print(res_list)
+    res = json.dumps(res_list,cls=NpEncoder)
+
+    return {'results': res}
 if __name__ == '__main__':
     uvicorn.run(app, port=9050, host='0.0.0.0')
 

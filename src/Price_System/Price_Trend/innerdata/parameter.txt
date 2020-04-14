@@ -1,0 +1,5 @@
+Final_Price
+Transaction_Time
+['Region', 'Road', 'Community_Name', 'Final_Price', 'Transaction_Time']
+[7, 15]
+{'Region': ['徐汇', '长宁'], 'Road': ['南桥', '南京西路']}
