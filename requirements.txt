@@ -2,7 +2,7 @@ aiofiles==0.4.0
 beautifulsoup4==4.8.2
 bs4==0.0.1
 elasticsearch==7.5.1
-fastapi==0.52.0
+fastapi==0.65.2
 impyute==0.0.8
 Jinja2==2.11.1
 joblib==0.14.1
